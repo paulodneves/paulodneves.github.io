@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Sourcing — Do Zero ao Domínio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:       #07091a;
+      --bg-1:     #0c1228;
+      --bg-2:     #111936;
+      --surface:  #16203e;
+      --violet:         #7c3aed;
+      --violet-light:   #a78bfa;
+      --violet-xlight:  #ddd6fe;
+      --violet-bg:      rgba(124,58,237,0.1);
+      --violet-border:  rgba(124,58,237,0.25);
+      --cyan:           #0891b2;
+      --cyan-light:     #67e8f9;
+      --cyan-bg:        rgba(8,145,178,0.1);
+      --cyan-border:    rgba(8,145,178,0.25);
+      --amber:          #d97706;
+      --amber-light:    #fcd34d;
+      --amber-bg:       rgba(217,119,6,0.1);
+      --amber-border:   rgba(217,119,6,0.25);
+      --emerald:        #059669;
+      --emerald-light:  #6ee7b7;
+      --emerald-bg:     rgba(5,150,105,0.07);
+      --emerald-border: rgba(5,150,105,0.22);
+      --red:            #dc2626;
+      --red-light:      #fca5a5;
+      --red-bg:         rgba(220,38,38,0.07);
+      --red-border:     rgba(220,38,38,0.22);
+      --text:     #e2e8f0;
+      --text-2:   #94a3b8;
+      --text-3:   #475569;
+      --border:   rgba(255,255,255,0.07);
+      --border-2: rgba(255,255,255,0.13);
+      --radius:    12px;
+      --radius-sm:  8px;
+      --radius-pill: 100px;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--violet-light); text-decoration: none; }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      background: rgba(255,255,255,0.07);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--violet-light);
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 0;
+      background: rgba(7,9,26,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--violet-light);
+      background: var(--violet-bg);
+      border: 1px solid var(--violet-border);
+      padding: 5px 14px; border-radius: var(--radius-pill);
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.8rem; color: var(--text-3);
+      transition: color 0.18s;
+    }
+    .nav-links a:hover { color: var(--text-2); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 160px 0 100px;
+    }
+
+    .streams {
+      position: absolute; inset: 0; overflow: hidden;
+      display: flex; flex-direction: column;
+      justify-content: space-around; pointer-events: none;
+      padding: 20px 0;
+    }
+    .stream-row { overflow: hidden; }
+    .stream-track {
+      display: inline-flex; gap: 10px; white-space: nowrap;
+    }
+    .stream-row:nth-child(1) .stream-track { animation: slide 32s linear infinite;         opacity: 0.38; }
+    .stream-row:nth-child(2) .stream-track { animation: slide 24s linear infinite reverse;  opacity: 0.28; }
+    .stream-row:nth-child(3) .stream-track { animation: slide 40s linear infinite;          opacity: 0.32; }
+    .stream-row:nth-child(4) .stream-track { animation: slide 28s linear infinite reverse;  opacity: 0.22; }
+    .stream-row:nth-child(5) .stream-track { animation: slide 36s linear infinite;          opacity: 0.30; }
+    @keyframes slide {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stream-track { animation: none !important; }
+    }
+
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; white-space: nowrap;
+      padding: 4px 12px; border-radius: var(--radius-pill);
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.18);
+      color: rgba(167,139,250,0.75);
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 70% at 40% 50%, transparent 20%, var(--bg) 75%),
+        linear-gradient(to bottom, var(--bg) 0%, transparent 18%, transparent 82%, var(--bg) 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--violet-light); margin-bottom: 28px;
+    }
+    .eyebrow::before {
+      content: ''; display: block; width: 22px; height: 1px;
+      background: var(--violet-light);
+    }
+
+    .display {
+      font-size: clamp(2.8rem, 6.5vw, 5.4rem);
+      font-weight: 700; letter-spacing: -0.04em;
+      line-height: 1.02; margin-bottom: 28px;
+    }
+    .gradient-text {
+      background: linear-gradient(108deg, #a78bfa 0%, #fcd34d 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem; color: var(--text-2);
+      max-width: 520px; line-height: 1.6; margin-bottom: 48px;
+    }
+
+    .hero-stats { display: flex; gap: 32px; align-items: center; }
+    .stat { display: flex; flex-direction: column; gap: 3px; }
+    .stat-n {
+      font-size: 2rem; font-weight: 700;
+      letter-spacing: -0.03em; color: var(--violet-light); line-height: 1;
+    }
+    .stat-l { font-size: 0.75rem; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+    .stat-div { width: 1px; height: 40px; background: var(--border-2); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 100px 0; border-bottom: 1px solid var(--border); }
+    .section-alt { background: var(--bg-1); }
+
+    .phase-badge {
+      display: inline-flex; align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--violet-light); background: var(--violet-bg);
+      border: 1px solid var(--violet-border);
+      border-radius: var(--radius-pill); padding: 5px 14px; margin-bottom: 22px;
+    }
+
+    .s-heading {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 600; letter-spacing: -0.025em; line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .s-sub {
+      color: var(--text-2); font-size: 1rem;
+      max-width: 540px; margin-bottom: 52px;
+    }
+
+    /* ── COMPARISON ── */
+    .comparison {
+      display: grid; grid-template-columns: 1fr 52px 1fr;
+      border: 1px solid var(--border-2); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 36px;
+    }
+    .comp-side { padding: 36px; }
+    .comp-side.crud { background: var(--bg-1); }
+    .comp-side.es   { background: rgba(124,58,237,0.05); }
+
+    .comp-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 14px;
+    }
+    .comp-badge.crud { background: var(--red-bg);    color: var(--red-light);    border: 1px solid var(--red-border);    }
+    .comp-badge.es   { background: var(--violet-bg); color: var(--violet-light); border: 1px solid var(--violet-border); }
+
+    .comp-title {
+      font-size: 1.05rem; font-weight: 600; margin-bottom: 16px;
+    }
+    .comp-side.crud .comp-title { color: var(--text-2); }
+    .comp-side.es   .comp-title { color: var(--text); }
+
+    .code-block {
+      background: rgba(0,0,0,0.45);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.77rem; line-height: 1.75;
+      white-space: pre; overflow-x: auto; margin-bottom: 16px;
+    }
+    .code-block.muted { color: var(--text-3); }
+    .code-block.vivid { color: var(--violet-xlight); }
+
+    .comp-note { font-size: 0.86rem; color: var(--text-2); line-height: 1.5; }
+    .comp-note em { color: var(--text); font-style: normal; font-weight: 500; }
+
+    .comp-div {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-2);
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    }
+    .vs {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-3); writing-mode: vertical-rl;
+    }
+
+    .principle-box {
+      background: rgba(124,58,237,0.07);
+      border: 1px solid var(--violet-border);
+      border-radius: var(--radius); padding: 28px 32px;
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+    .principle-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .principle-text { font-size: 0.97rem; color: var(--text-2); line-height: 1.6; }
+    .principle-text strong { color: var(--violet-xlight); }
+
+    /* ── PILLARS ── */
+    .pillars-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .pillar-wide { grid-column: 1 / -1; }
+
+    .pillar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px; position: relative; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pillar-card:hover { border-color: var(--border-2); transform: translateY(-1px); }
+    .pillar-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--accent, var(--violet));
+    }
+
+    .p-violet { --accent: var(--violet); }
+    .p-cyan   { --accent: var(--cyan);   }
+    .p-amber  { --accent: var(--amber);  }
+
+    .pillar-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; color: var(--text-3);
+      letter-spacing: 0.08em; margin-bottom: 10px;
+    }
+    .pillar-title {
+      font-size: 1.22rem; font-weight: 600;
+      letter-spacing: -0.015em; margin-bottom: 4px;
+    }
+    .p-violet .pillar-title  { color: var(--violet-xlight); }
+    .p-cyan   .pillar-title  { color: var(--cyan-light); }
+    .p-amber  .pillar-title  { color: var(--amber-light); }
+
+    .pillar-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; margin-bottom: 16px;
+    }
+    .p-violet .pillar-sub { color: var(--violet-light); }
+    .p-cyan   .pillar-sub { color: var(--cyan-light); }
+    .p-amber  .pillar-sub { color: var(--amber-light); }
+
+    .pillar-body {
+      font-size: 0.88rem; color: var(--text-2);
+      line-height: 1.65; margin-bottom: 20px;
+    }
+    .pillar-key {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+    .pillar-key-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 5px;
+    }
+    .pillar-key-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem; color: var(--text-2); line-height: 1.5;
+    }
+
+    /* ── AUTOPSY ── */
+    .autopsy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin-bottom: 28px;
+    }
+    .autopsy-card {
+      border-radius: var(--radius); padding: 36px; border: 1px solid;
+    }
+    .autopsy-card.success { background: var(--emerald-bg); border-color: var(--emerald-border); }
+    .autopsy-card.failure { background: var(--red-bg);     border-color: var(--red-border);     }
+
+    .autopsy-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 14px;
+    }
+    .success .autopsy-badge { background: rgba(5,150,105,0.14); color: var(--emerald-light); border: 1px solid var(--emerald-border); }
+    .failure .autopsy-badge { background: rgba(220,38,38,0.14);  color: var(--red-light);     border: 1px solid var(--red-border);     }
+
+    .autopsy-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 14px; }
+    .success .autopsy-title { color: var(--emerald-light); }
+    .failure .autopsy-title { color: var(--red-light); }
+
+    .autopsy-body { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; }
+
+    .autopsy-list { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 7px; }
+    .autopsy-list li {
+      font-size: 0.86rem; color: var(--text-2);
+      padding-left: 18px; position: relative; line-height: 1.5;
+    }
+    .autopsy-list li::before { position: absolute; left: 0; }
+    .success .autopsy-list li::before { content: '✓'; color: var(--emerald); }
+    .failure .autopsy-list li::before { content: '✗'; color: var(--red); }
+
+    .golden-rule {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(217,119,6,0.05));
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius); padding: 30px 32px;
+    }
+    .golden-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--amber-light); margin-bottom: 10px;
+    }
+    .golden-text { font-size: 1.02rem; color: var(--text); line-height: 1.62; }
+    .golden-text em { font-style: normal; color: var(--amber-light); font-weight: 500; }
+
+    /* ── MASTERY ── */
+    .mastery-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .mastery-item {
+      display: grid; grid-template-columns: 200px 1fr;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--surface); overflow: hidden;
+      transition: border-color 0.18s;
+    }
+    .mastery-item:hover { border-color: var(--border-2); }
+
+    .mastery-left {
+      padding: 26px 28px;
+      background: rgba(0,0,0,0.22);
+      border-right: 1px solid var(--border);
+    }
+    .mastery-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--text-3); margin-bottom: 8px;
+    }
+    .mastery-title {
+      font-size: 1rem; font-weight: 600;
+      color: var(--violet-xlight); margin-bottom: 4px;
+    }
+    .mastery-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; color: var(--text-3); line-height: 1.4;
+    }
+    .mastery-right { padding: 26px 28px; }
+    .mastery-body { font-size: 0.87rem; color: var(--text-2); line-height: 1.65; }
+    .mastery-insight {
+      margin-top: 14px; padding: 10px 14px;
+      background: rgba(124,58,237,0.08);
+      border-left: 2px solid var(--violet);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; color: var(--violet-xlight); line-height: 1.55;
+    }
+
+    /* ── GLOSSÁRIO ── */
+    .glossario { padding: 80px 0 64px; }
+
+    .gloss-heading {
+      font-size: 1.5rem; font-weight: 600;
+      letter-spacing: -0.02em; margin-bottom: 6px;
+    }
+    .gloss-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--text-3); margin-bottom: 40px;
+    }
+    .gloss-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px;
+    }
+    .gloss-item {
+      padding: 20px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--surface);
+      transition: border-color 0.18s;
+    }
+    .gloss-item:hover { border-color: var(--border-2); }
+    .gloss-term {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--violet-light); margin-bottom: 7px;
+    }
+    .gloss-def { font-size: 0.82rem; color: var(--text-2); line-height: 1.57; }
+
+    .footer-bar {
+      margin-top: 60px; padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; color: var(--text-3);
+    }
+    .top-link {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--text-3); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: var(--radius-pill);
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .top-link:hover { border-color: var(--border-2); color: var(--text-2); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .nav-links { display: none; }
+      .comparison { grid-template-columns: 1fr; }
+      .comp-div {
+        border-left: none; border-right: none;
+        border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        padding: 14px;
+      }
+      .vs { writing-mode: horizontal-tb; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .pillar-wide { grid-column: auto; }
+      .autopsy-grid { grid-template-columns: 1fr; }
+      .mastery-item { grid-template-columns: 1fr; }
+      .mastery-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .gloss-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; }
+      .footer-bar { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="nav-brand">// ES</a>
+      <div class="nav-links">
+        <a href="#arquimedes">Arquimedes</a>
+        <a href="#fundamentos">Fundamentos</a>
+        <a href="#alavancagem">Alavancagem</a>
+        <a href="#masterizacao">Masterização</a>
+        <a href="#glossario">Glossário</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="streams" aria-hidden="true">
+      <!-- Row 1 -->
+      <div class="stream-row"><div class="stream-track">
+        <span class="pill">OrderPlaced</span><span class="pill">PaymentApproved</span><span class="pill">ItemShipped</span><span class="pill">CartUpdated</span><span class="pill">UserRegistered</span><span class="pill">OrderCancelled</span><span class="pill">StockReduced</span><span class="pill">InvoiceIssued</span><span class="pill">SubscriptionRenewed</span><span class="pill">RefundProcessed</span><span class="pill">DeliveryScheduled</span>
+        <span class="pill">OrderPlaced</span><span class="pill">PaymentApproved</span><span class="pill">ItemShipped</span><span class="pill">CartUpdated</span><span class="pill">UserRegistered</span><span class="pill">OrderCancelled</span><span class="pill">StockReduced</span><span class="pill">InvoiceIssued</span><span class="pill">SubscriptionRenewed</span><span class="pill">RefundProcessed</span><span class="pill">DeliveryScheduled</span>
+      </div></div>
+      <!-- Row 2 -->
+      <div class="stream-row"><div class="stream-track">
+        <span class="pill">AccountOpened</span><span class="pill">MoneyDeposited</span><span class="pill">SessionStarted</span><span class="pill">ProfileUpdated</span><span class="pill">AddressVerified</span><span class="pill">CouponApplied</span><span class="pill">CheckoutStarted</span><span class="pill">LoyaltyEarned</span><span class="pill">ReviewPosted</span><span class="pill">WishlistUpdated</span><span class="pill">PlanUpgraded</span>
+        <span class="pill">AccountOpened</span><span class="pill">MoneyDeposited</span><span class="pill">SessionStarted</span><span class="pill">ProfileUpdated</span><span class="pill">AddressVerified</span><span class="pill">CouponApplied</span><span class="pill">CheckoutStarted</span><span class="pill">LoyaltyEarned</span><span class="pill">ReviewPosted</span><span class="pill">WishlistUpdated</span><span class="pill">PlanUpgraded</span>
+      </div></div>
+      <!-- Row 3 -->
+      <div class="stream-row"><div class="stream-track">
+        <span class="pill">ShipmentTracked</span><span class="pill">PaymentFailed</span><span class="pill">ProductViewed</span><span class="pill">OrderConfirmed</span><span class="pill">NotificationSent</span><span class="pill">PasswordChanged</span><span class="pill">ReturnInitiated</span><span class="pill">VoucherRedeemed</span><span class="pill">ContractSigned</span><span class="pill">AuditLogged</span><span class="pill">AccountVerified</span>
+        <span class="pill">ShipmentTracked</span><span class="pill">PaymentFailed</span><span class="pill">ProductViewed</span><span class="pill">OrderConfirmed</span><span class="pill">NotificationSent</span><span class="pill">PasswordChanged</span><span class="pill">ReturnInitiated</span><span class="pill">VoucherRedeemed</span><span class="pill">ContractSigned</span><span class="pill">AuditLogged</span><span class="pill">AccountVerified</span>
+      </div></div>
+      <!-- Row 4 -->
+      <div class="stream-row"><div class="stream-track">
+        <span class="pill">SagaStarted</span><span class="pill">SnapshotCreated</span><span class="pill">ProjectionRebuilt</span><span class="pill">EventVersionMigrated</span><span class="pill">AggregateLoaded</span><span class="pill">ReadModelUpdated</span><span class="pill">CompensationTriggered</span><span class="pill">OutboxPublished</span><span class="pill">StreamReplayed</span><span class="pill">CommandHandled</span>
+        <span class="pill">SagaStarted</span><span class="pill">SnapshotCreated</span><span class="pill">ProjectionRebuilt</span><span class="pill">EventVersionMigrated</span><span class="pill">AggregateLoaded</span><span class="pill">ReadModelUpdated</span><span class="pill">CompensationTriggered</span><span class="pill">OutboxPublished</span><span class="pill">StreamReplayed</span><span class="pill">CommandHandled</span>
+      </div></div>
+      <!-- Row 5 -->
+      <div class="stream-row"><div class="stream-track">
+        <span class="pill">MoneyWithdrawn</span><span class="pill">ReportGenerated</span><span class="pill">InventoryAlerted</span><span class="pill">FeedbackSubmitted</span><span class="pill">SupportTicketOpened</span><span class="pill">CategoryBrowsed</span><span class="pill">PriceAlertSet</span><span class="pill">PolicyAccepted</span><span class="pill">SessionExpired</span><span class="pill">DraftSaved</span>
+        <span class="pill">MoneyWithdrawn</span><span class="pill">ReportGenerated</span><span class="pill">InventoryAlerted</span><span class="pill">FeedbackSubmitted</span><span class="pill">SupportTicketOpened</span><span class="pill">CategoryBrowsed</span><span class="pill">PriceAlertSet</span><span class="pill">PolicyAccepted</span><span class="pill">SessionExpired</span><span class="pill">DraftSaved</span>
+      </div></div>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+      <div class="eyebrow">Guia de Domínio · Event Sourcing</div>
+      <h1 class="display">
+        Estado é derivado.<br>
+        <span class="gradient-text">Evento é a verdade.</span>
+      </h1>
+      <p class="hero-sub">
+        Do zero ao domínio do padrão arquitetural que transforma como você persiste, audita e entende seus dados — para sempre.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-n">4</span>
+          <span class="stat-l">fases de domínio</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n">5</span>
+          <span class="stat-l">pilares essenciais</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n">1</span>
+          <span class="stat-l">princípio que muda tudo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 0 – ARQUIMEDES -->
+  <section class="section" id="arquimedes">
+    <div class="container">
+      <div class="phase-badge">Fase 0 · Ponto de Arquimedes</div>
+      <h2 class="s-heading">A Peça de Dominó</h2>
+      <p class="s-sub">O único conceito que, ao cair, derruba todas as outras dificuldades do tema.</p>
+
+      <div class="comparison">
+        <div class="comp-side crud">
+          <div class="comp-badge crud">CRUD</div>
+          <h3 class="comp-title">Estado sem História</h3>
+          <pre class="code-block muted">-- ❌ Você só sabe ONDE está.
+-- Não sabe COMO chegou aqui.
+
+UPDATE accounts
+  SET balance = 1000
+  WHERE id = 'acc-123'
+
+-- Depois disso: silêncio.
+-- O passado desapareceu.</pre>
+          <p class="comp-note">Você armazena o <em>onde está</em>. Perdeu para sempre o <em>como chegou</em>.</p>
+        </div>
+
+        <div class="comp-div">
+          <span class="vs">versus</span>
+        </div>
+
+        <div class="comp-side es">
+          <div class="comp-badge es">Event Sourcing</div>
+          <h3 class="comp-title">A Fita Completa</h3>
+          <pre class="code-block vivid">-- ✓ Cada fato gravado para sempre.
+
+AccountOpened   { balance: 0 }   # t=0
+MoneyDeposited  { amount: 500 }  # t=1
+MoneyWithdrawn  { amount: 200 }  # t=2
+MoneyDeposited  { amount: 700 }  # t=3
+
+-- 0 + 500 − 200 + 700 = 1000 ✓</pre>
+          <p class="comp-note">Você armazena o <em>que aconteceu</em>. O estado emerge do replay.</p>
+        </div>
+      </div>
+
+      <div class="principle-box">
+        <div class="principle-icon">⊕</div>
+        <p class="principle-text">
+          <strong>A analogia perfeita:</strong> O Event Store é a contabilidade por partidas dobradas — o sistema financeiro mais confiável jamais inventado. Um banco não armazena "saldo atual" e descarta os lançamentos. Ele guarda cada transação. O saldo é apenas a soma. Event Sourcing é a contabilidade das suas aplicações.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 1 – 5 PILARES -->
+  <section class="section section-alt" id="fundamentos">
+    <div class="container">
+      <div class="phase-badge">Fase 1 · Fundamentos de Ferro</div>
+      <h2 class="s-heading">Os 5 Pilares</h2>
+      <p class="s-sub">Os 20% de conceitos que geram 80% da compreensão prática.</p>
+
+      <div class="pillars-grid">
+
+        <div class="pillar-card p-violet">
+          <div class="pillar-num">01 · Pilar</div>
+          <h3 class="pillar-title">Event</h3>
+          <div class="pillar-sub">fato imutável que algo aconteceu</div>
+          <p class="pillar-body">
+            Sempre no passado: <code>PedidoColocado</code>, nunca <code>CriarPedido</code>. Uma vez gravado, não existe update, não existe delete. É o que aconteceu — atômico, imutável, verdadeiro.
+          </p>
+          <div class="pillar-key">
+            <div class="pillar-key-label">Schema mínimo</div>
+            <div class="pillar-key-val">eventId · aggregateId · eventType<br>timestamp · version · payload</div>
+          </div>
+        </div>
+
+        <div class="pillar-card p-violet">
+          <div class="pillar-num">02 · Pilar</div>
+          <h3 class="pillar-title">Event Store</h3>
+          <div class="pillar-sub">o ledger sagrado, append-only</div>
+          <p class="pillar-body">
+            Log append-only. A única fonte de verdade do sistema. Eventos organizados em streams — um por instância de aggregate. EventStoreDB, PostgreSQL com constraint, ou Kafka. O critério: nunca modifica, só acrescenta.
+          </p>
+          <div class="pillar-key">
+            <div class="pillar-key-label">Invariante absoluta</div>
+            <div class="pillar-key-val">INSERT only · no UPDATE · no DELETE · forever</div>
+          </div>
+        </div>
+
+        <div class="pillar-card p-cyan">
+          <div class="pillar-num">03 · Pilar</div>
+          <h3 class="pillar-title">Aggregate</h3>
+          <div class="pillar-sub">o ator do domínio</div>
+          <p class="pillar-body">
+            Recebe commands → valida regras de negócio → emite eventos → reconstrói estado via replay. O estado do aggregate <em style="font-style:normal;font-weight:500">nunca</em> é persistido diretamente. Para carregá-lo: fetch stream → replay → estado emerge.
+          </p>
+          <div class="pillar-key">
+            <div class="pillar-key-label">Ciclo de vida</div>
+            <div class="pillar-key-val">Command → Validate → Emit Event → Apply State → Persist Stream</div>
+          </div>
+        </div>
+
+        <div class="pillar-card p-cyan">
+          <div class="pillar-num">04 · Pilar</div>
+          <h3 class="pillar-title">Projection</h3>
+          <div class="pillar-sub">read model / lente de consulta</div>
+          <p class="pillar-body">
+            O Event Store é péssimo para queries — é um log, não um banco relacional. A Projection consome eventos e constrói views desnormalizadas. Você pode ter N projections dos mesmos eventos. É aqui que entra o <code>CQRS</code>.
+          </p>
+          <div class="pillar-key">
+            <div class="pillar-key-label">Regra de ouro</div>
+            <div class="pillar-key-val">1 Event Store → N Projections independentes</div>
+          </div>
+        </div>
+
+        <div class="pillar-card p-amber pillar-wide">
+          <div class="pillar-num">05 · Pilar · O Superpoder</div>
+          <h3 class="pillar-title">Event Replay</h3>
+          <div class="pillar-sub">time travel · auditoria perfeita · projeções regeneráveis</div>
+          <p class="pillar-body" style="max-width:680px">
+            A qualquer momento, você reconstitui qualquer estado em qualquer ponto no tempo. Bug na Projection por 3 meses? Delete, corrija o código, replaye todos os eventos — Projection limpa, como se o bug nunca tivesse existido. "Qual era o estado do pedido dia 15/11 às 15h?" — replay até aquele timestamp. Nenhum outro padrão de persistência oferece isso.
+          </p>
+          <div class="pillar-key" style="max-width:640px">
+            <div class="pillar-key-label">Casos de uso exclusivos</div>
+            <div class="pillar-key-val">Time travel · Projection rebuild · Audit trail automático · What-if scenarios · Debug de produção sem logs</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 2 – ALAVANCAGEM -->
+  <section class="section" id="alavancagem">
+    <div class="container">
+      <div class="phase-badge">Fase 2 · Consolidação e Alavancagem</div>
+      <h2 class="s-heading">As Autópsias</h2>
+      <p class="s-sub">Um sucesso retumbante e um fracasso catastrófico — o mesmo padrão, contextos opostos.</p>
+
+      <div class="autopsy-grid">
+        <div class="autopsy-card success">
+          <div class="autopsy-badge">Sucesso</div>
+          <h3 class="autopsy-title">Kafka + LinkedIn</h3>
+          <p class="autopsy-body">
+            Martin Kleppmann e a equipe do LinkedIn precisavam rastrear todas as atividades dos usuários e alimentar múltiplos sistemas downstream — recomendações, analytics, feed — sem perder dados.
+          </p>
+          <ul class="autopsy-list">
+            <li>Cada ação do usuário → evento gravado no stream</li>
+            <li>N Projections independentes consumindo os mesmos eventos</li>
+            <li>Kafka como event store distribuído de alta escala</li>
+            <li>Greg Young formalizou o padrão criando EventStoreDB</li>
+            <li>Adotado por Netflix, Uber, Airbnb e centenas de empresas</li>
+          </ul>
+        </div>
+
+        <div class="autopsy-card failure">
+          <div class="autopsy-badge">Fracasso</div>
+          <h3 class="autopsy-title">Event Sourcing em Cadastro de Usuários</h3>
+          <p class="autopsy-body">
+            Uma startup aplicou Event Sourcing no cadastro simples de usuários (nome, email, telefone). Seis meses depois, o colapso:
+          </p>
+          <ul class="autopsy-list">
+            <li>Cada update de perfil: 3–5 eventos gerados</li>
+            <li>Carregar um perfil simples: 400 eventos de replay</li>
+            <li>Listagem com 50 usuários: 20.000 eventos processados</li>
+            <li>Time debugando "qual era o nome antes do email de 3 semanas atrás"</li>
+            <li>Informação que nunca importou para o negócio</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="golden-rule">
+        <div class="golden-label">Regra de Ouro</div>
+        <p class="golden-text">
+          Se a pergunta <em>"o que mudou neste registro e quando?"</em> nunca vai ser feita pelo negócio, você <em>não precisa de Event Sourcing.</em> ES resolve domínios ricos onde o histórico importa: finanças, pedidos, logística, saúde, compliance. Para cadastros simples, é engenharia de over-design pura.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 3 – MASTERIZAÇÃO -->
+  <section class="section section-alt" id="masterizacao">
+    <div class="container">
+      <div class="phase-badge">Fase 3 · Masterização</div>
+      <h2 class="s-heading">O que o 1% Sabe</h2>
+      <p class="s-sub">Detalhes que 99% ignora — mas que definem o arquiteto de elite.</p>
+
+      <div class="mastery-list">
+
+        <div class="mastery-item">
+          <div class="mastery-left">
+            <div class="mastery-num">01 · Performance</div>
+            <div class="mastery-title">Snapshots</div>
+            <div class="mastery-tag">otimização de replay</div>
+          </div>
+          <div class="mastery-right">
+            <p class="mastery-body">
+              Conforme o aggregate acumula eventos, o replay fica custoso. Um pedido com 1.000 eventos leva 1.000 iterações. Solução: snapshot periódico do estado atual a cada N eventos. Próxima leitura: <code>snapshot@900 + replay(901..1000)</code> em vez de <code>replay(1..1000)</code>.
+            </p>
+            <div class="mastery-insight">snapshot(estado atual) → armazenar → próximo load: snapshot + apenas eventos recentes</div>
+          </div>
+        </div>
+
+        <div class="mastery-item">
+          <div class="mastery-left">
+            <div class="mastery-num">02 · Evolução</div>
+            <div class="mastery-title">Event Versioning</div>
+            <div class="mastery-tag">o problema silencioso</div>
+          </div>
+          <div class="mastery-right">
+            <p class="mastery-body">
+              Você lançou <code>OrderPlaced&nbsp;{&nbsp;items&nbsp;}</code> em v1. Em v1.5 adicionou <code>shippingAddress</code>. O Event Store tem eventos de ambas as versões. Estratégias: <strong>Upcasting</strong> (transforme na leitura), <strong>Weak Schema</strong> (campos opcionais), <strong>Versionamento explícito</strong> (<code>OrderPlacedV1</code>, <code>OrderPlacedV2</code>). Regra absoluta: um evento gravado é imutável para sempre.
+            </p>
+            <div class="mastery-insight">Você não migra eventos. Você os transforma na leitura via Upcaster.</div>
+          </div>
+        </div>
+
+        <div class="mastery-item">
+          <div class="mastery-left">
+            <div class="mastery-num">03 · Distribuição</div>
+            <div class="mastery-title">Sagas</div>
+            <div class="mastery-tag">coordenação multi-aggregate</div>
+          </div>
+          <div class="mastery-right">
+            <p class="mastery-body">
+              "Processar um pedido" cruza: Order + Payment + Inventory + Shipping — aggregates distintos, transações distribuídas impossíveis. Uma Saga é um coordenador stateful que escuta eventos de múltiplos streams, emite commands para os participantes, e gerencia compensações. Não existe rollback de banco — existe um <code>CompensatingEvent</code> que semanticamente desfaz o anterior.
+            </p>
+            <div class="mastery-insight">Saga escuta → emite commands → compensa via novos eventos. Nunca deleta. Sempre acrescenta.</div>
+          </div>
+        </div>
+
+        <div class="mastery-item">
+          <div class="mastery-left">
+            <div class="mastery-num">04 · Tradeoff</div>
+            <div class="mastery-title">Eventual Consistency</div>
+            <div class="mastery-tag">a escolha arquitetural</div>
+          </div>
+          <div class="mastery-right">
+            <p class="mastery-body">
+              Com projections assíncronas existe uma janela onde o Event Store está atualizado mas a Projection não. Usuário faz pedido → <code>OrderPlaced</code> no Event Store → Projection ainda processando → listagem não mostra o pedido. Isso não é bug — é escolha deliberada. O 1% projeta a UX para isso: spinners, mensagens de confirmação, WebSocket push quando a projection atualizar.
+            </p>
+            <div class="mastery-insight">Eventual consistency não é bug. É o preço da escalabilidade de projections independentes.</div>
+          </div>
+        </div>
+
+        <div class="mastery-item">
+          <div class="mastery-left">
+            <div class="mastery-num">05 · Confusão Fatal</div>
+            <div class="mastery-title">ES ≠ EDA</div>
+            <div class="mastery-tag">dimensões ortogonais</div>
+          </div>
+          <div class="mastery-right">
+            <p class="mastery-body">
+              <strong>Event-Driven Architecture (EDA)</strong> é um estilo de integração entre componentes via eventos. <strong>Event Sourcing (ES)</strong> é um padrão de persistência onde estado = replay de eventos. Você pode ter EDA sem ES (Kafka para comunicação, banco relacional para persistência). Pode ter ES sem EDA (aggregate local, sem broker). São dimensões ortogonais. Confundir os dois revela gap conceitual imediato em qualquer entrevista sênior.
+            </p>
+            <div class="mastery-insight">EDA = como os componentes se comunicam · ES = como o estado é persistido. Independentes.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOSSÁRIO -->
+  <footer class="glossario" id="glossario">
+    <div class="container">
+      <h2 class="gloss-heading">Glossário de Autoridade</h2>
+      <p class="gloss-meta">// termos que definem o vocabulário do 1%</p>
+
+      <div class="gloss-grid">
+        <div class="gloss-item">
+          <div class="gloss-term">Command</div>
+          <p class="gloss-def">Intenção de mudar estado. <code>ColocarPedido</code>. Pode ser rejeitado pelo aggregate se regras de negócio falharem.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Event</div>
+          <p class="gloss-def">Fato que já aconteceu. <code>PedidoColocado</code>. Imutável. Passado. Eterno. Nunca rejeitado — já ocorreu.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Stream</div>
+          <p class="gloss-def">Sequência ordenada de eventos pertencentes a um aggregate específico. Um stream por instância de aggregate.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Idempotência</div>
+          <p class="gloss-def">Capacidade de processar o mesmo evento N vezes sem efeito colateral. Essencial para projections resilientes a redeliveries.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Upcasting</div>
+          <p class="gloss-def">Transformação de eventos de versão antiga para versão nova no momento da leitura, sem alterar o Event Store.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Process Manager</div>
+          <p class="gloss-def">Coordenador stateful de fluxos de negócio que cruzam múltiplos aggregates. Sinônimo: Saga.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Compensating Event</div>
+          <p class="gloss-def">Evento que semanticamente "desfaz" um evento anterior. Não deleta — acrescenta. O registro histórico é preservado.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">Outbox Pattern</div>
+          <p class="gloss-def">Técnica para garantir publicação exactly-once mesmo com falhas entre escrita no DB e publicação no broker de mensagens.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">CQRS</div>
+          <p class="gloss-def">Command Query Responsibility Segregation. Write side: aggregates + event store. Read side: projections otimizadas por query pattern.</p>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <p class="footer-mono">// Estado é derivado. Evento é a verdade.</p>
+        <a href="#top" class="top-link">↑ voltar ao topo</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
