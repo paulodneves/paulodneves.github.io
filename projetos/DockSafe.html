@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DockSafe — Sistema de dupla verificação para expedição logística. 50% de redução nos erros de envio e R$ 16M economizados no primeiro ano.">
-    <title>DockSafe | Diego Neves</title>
+    <meta name="description" content="DockSafe — dupla checagem de carregamento na expedição logística. −80% nos erros de expedição e R$ 16,8M em frete duplicado evitado (set/2024 – set/2025).">
+    <title>DockSafe | Paulo Neves</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="../css/styles.css">
@@ -260,13 +260,12 @@
     <!-- NAV -->
     <header id="header" class="header">
         <nav class="nav">
-            <a href="../index.html" class="nav__logo"><span class="accent">D</span>iego <span class="accent">N</span>eves</a>
+            <a href="../index.html" class="nav__logo"><span class="accent">P</span>aulo <span class="accent">N</span>eves</a>
             <div class="nav__links" id="nav-links">
                 <a href="../index.html#sobre" class="nav__link">Sobre</a>
-                <a href="../index.html#servicos" class="nav__link">Serviços</a>
-                <a href="../index.html#portfolio" class="nav__link">Portfólio</a>
+                <a href="../index.html#portfolio" class="nav__link">Projetos</a>
                 <a href="../index.html#experiencia" class="nav__link">Trajetória</a>
-                <a href="../index.html#contato" class="nav__cta">Agendar Reunião</a>
+                <a href="../index.html#contato" class="nav__cta">Contato</a>
             </div>
             <button class="nav__mobile-btn" id="mobile-menu-button" aria-label="Menu">
                 <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -275,10 +274,9 @@
         </nav>
         <div class="nav__mobile hidden" id="mobile-menu">
             <a href="../index.html#sobre" class="nav__mobile-link">Sobre</a>
-            <a href="../index.html#servicos" class="nav__mobile-link">Serviços</a>
-            <a href="../index.html#portfolio" class="nav__mobile-link">Portfólio</a>
+            <a href="../index.html#portfolio" class="nav__mobile-link">Projetos</a>
             <a href="../index.html#experiencia" class="nav__mobile-link">Trajetória</a>
-            <a href="../index.html#contato" class="nav__mobile-link nav__mobile-cta">Agendar Reunião</a>
+            <a href="../index.html#contato" class="nav__mobile-link nav__mobile-cta">Contato</a>
         </div>
     </header>
 
@@ -296,18 +294,20 @@
                 </div>
                 <h1 class="project-hero__title">DockSafe</h1>
                 <div>
-                    <span class="project-hero__result">R$ 16M economizados no 1º ano</span>
+                    <span class="project-hero__result">−80% erros · R$ 16,8M em frete evitado</span>
                 </div>
                 <p class="project-hero__desc">
-                    Sistema de dupla checagem do carregamento que eliminou 50% dos erros de expedição na TPC Logística Inteligente, integrando desktop, web e analytics numa única plataforma.
+                    Dupla checagem do carregamento que reduziu em 80% os erros de expedição na TPC Logística, integrando um app desktop na doca a um servidor web administrativo numa única plataforma.
                 </p>
                 <div class="project-hero__tags">
                     <span>Python</span>
                     <span>Django</span>
-                    <span>PyQt6</span>
                     <span>PostgreSQL</span>
-                    <span>Streamlit</span>
+                    <span>PyQt6</span>
+                    <span>Parquet</span>
                     <span>Pandas</span>
+                    <span>TailwindCSS</span>
+                    <span>JavaScript</span>
                 </div>
             </div>
         </section>
@@ -359,18 +359,17 @@
                             Arquitetei o DockSafe em Python e Django com banco PostgreSQL, cobrindo todo o ciclo da expedição — do planejamento do carregamento até a confirmação final na doca.
                         </p>
                         <ul class="project-block__list">
-                            <li><strong>Aplicativo desktop (PyQt6)</strong> — interface touchscreen para os operadores na doca, com leitura de código de barras e alerta visual imediato em caso de divergência.</li>
-                            <li><strong>Interface web administrativa</strong> — painel de gestão responsivo para supervisores acompanharem o status de cada carregamento em tempo real.</li>
-                            <li><strong>Dashboard analítico (Streamlit)</strong> — visão gerencial de KPIs, taxa de acerto por turno, tipos de erro e evolução histórica.</li>
+                            <li><strong>Aplicativo desktop (PyQt6 · Parquet)</strong> — interface touchscreen para os operadores na doca, com leitura de código de barras, armazenamento local em Parquet e alerta visual imediato em caso de divergência.</li>
+                            <li><strong>Servidor web administrativo (Django · HTML · TailwindCSS · JavaScript)</strong> — painel de gestão responsivo para supervisores acompanharem o status de cada carregamento em tempo real.</li>
                             <li><strong>Processamento com Pandas</strong> — validação e cruzamento dos dados de carregamento contra a ordem de expedição em tempo real.</li>
                         </ul>
                     </div>
 
                     <div class="project-block">
                         <p class="project-block__eyebrow">Resultados</p>
-                        <h2 class="project-block__title">50% menos erros. R$ 16M economizados.</h2>
+                        <h2 class="project-block__title">−80% nos erros. R$ 16,8M em frete evitado.</h2>
                         <p class="project-block__text">
-                            No primeiro ano de operação, o DockSafe reduziu em 50% os custos associados a erros de expedição. A economia direta mapeada chegou a R$ 16 milhões, resultado da eliminação de reentregas, devoluções e penalidades contratuais.
+                            Entre set/2024 e set/2025, o DockSafe reduziu em 80% os erros de expedição. O ganho financeiro mapeado chegou a R$ 16,8 milhões, referente especificamente ao custo de frete duplicado evitado — a devolução e o reenvio de mercadoria despachada por engano. É um número conservador: não inclui o retrabalho e as horas gastas em cada correção.
                         </p>
                         <p class="project-block__text">
                             Além do impacto financeiro, a operação ganhou rastreabilidade completa: cada carregamento passou a ter registro de quem verificou, quando e com qual resultado — dados que antes simplesmente não existiam.
@@ -385,12 +384,12 @@
         <section class="project-cta section-dark">
             <div class="container">
                 <div class="project-cta__inner">
-                    <span class="section-label section-label--light">Próximo passo</span>
-                    <h2 class="section-title section-title--light">Posso construir isso para a sua operação</h2>
-                    <p class="section-sub section-sub--light">Uma conversa para entender seu processo já é suficiente para identificar onde está o custo invisível.</p>
+                    <span class="section-label section-label--light">Mais</span>
+                    <h2 class="section-title section-title--light">Explore o restante do trabalho</h2>
+                    <p class="section-sub section-sub--light">Veja os outros sistemas em produção ou entre em contato.</p>
                     <div class="project-cta__actions">
-                        <a href="../index.html#contato" class="btn btn--primary">Agendar Reunião</a>
-                        <a href="../index.html#portfolio" class="btn btn--outline-light">← Ver outros projetos</a>
+                        <a href="../index.html#portfolio" class="btn btn--primary">← Ver outros projetos</a>
+                        <a href="../index.html#contato" class="btn btn--outline-light">Contato</a>
                     </div>
                 </div>
             </div>
@@ -400,8 +399,13 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Diego Neves. Todos os direitos reservados.</p>
-            <p class="footer__sub">Maceió, AL &mdash; <a href="mailto:pdcassiano@gmail.com">pdcassiano@gmail.com</a></p>
+            <p>&copy; 2026 Paulo Neves.</p>
+            <p class="footer__sub">
+                <a href="mailto:pdcassiano@gmail.com">E-mail</a> &middot;
+                <a href="https://www.linkedin.com/in/paulodneves/" target="_blank" rel="noopener">LinkedIn</a> &middot;
+                <a href="https://github.com/paulodneves" target="_blank" rel="noopener">GitHub</a> &middot;
+                <a href="https://www.youtube.com/@dundercore" target="_blank" rel="noopener" title="Conteúdo técnico em Python no YouTube">YouTube</a>
+            </p>
         </div>
     </footer>
 

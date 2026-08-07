@@ -133,73 +133,89 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             title: 'DockSafe',
             category: 'software',
-            description: 'Sistema de dupla checagem do carregamento para eliminar erros na expedição de cargas.',
-            result: 'R$ 16M economizados',
-            tags: ['Python', 'Django', 'PyQt6', 'PostgreSQL', 'Streamlit'],
+            description: 'Dupla checagem do carregamento na expedição, com backend Django sobre PostgreSQL. Reduziu em 80% os erros de expedição e evitou R$ 16,8M em frete duplicado (set/2024 – set/2025).',
+            result: 'R$ 16,8M evitados',
+            tags: ['Python', 'Django', 'PostgreSQL', 'Parquet', 'Pandas'],
             link: 'projetos/DockSafe.html'
         },
         {
-            title: 'Sistema de Gestão (Carajás)',
+            title: 'EcoaLog',
             category: 'dados',
-            description: 'Gestão de dados do TOTVS Protheus com implementação de 4 painéis gerenciais em Power BI.',
-            result: '90% ↑ análise',
-            tags: ['Python', 'Power BI', 'GitHub', 'Automação'],
+            description: 'Consolidou dados do CD antes dispersos em várias planilhas e dashboards numa visão global única de produtividade, backlog e demanda, servida por API Django Ninja com visualizações em D3.js.',
+            result: null,
+            tags: ['Python', 'Django', 'Django Ninja', 'D3.js', 'Alpine.js'],
+            link: null
+        },
+        {
+            title: 'Project Flow',
+            category: 'software',
+            description: 'Gerenciador de projetos e tarefas que calcula automaticamente a matriz esforço/retorno. Adotado como padrão de gestão de projetos no CD.',
+            result: null,
+            tags: ['Python', 'Django', 'Alpine.js'],
+            link: null
+        },
+        {
+            title: 'Análise de Ocorrências',
+            category: 'dados',
+            description: 'Automação da análise de ocorrências sobre TOTVS Protheus, com painéis em Power BI. Execução da tarefa caiu de ~8h/dia para 50min/dia (~90%).',
+            result: '8h → 50min/dia',
+            tags: ['Python', 'SQL', 'Power BI', 'RPA'],
             link: null
         },
         {
             title: 'Velocidade de Entrega',
             category: 'dados',
-            description: 'Projeto para garantir entregas em até dois dias, eliminando relatórios manuais no faturamento.',
-            result: '100% automação',
-            tags: ['Python', 'Pandas', 'SAP', 'Tableau', 'VBS'],
+            description: 'Consolidação de faturamento com Pandas sobre extrações do SAP, eliminando relatórios manuais e entregando a visão em Tableau.',
+            result: null,
+            tags: ['Python', 'Pandas', 'SAP', 'Tableau'],
             link: 'projetos/Velocidade-de-Entrega.html'
         },
         {
-            title: 'Maestro',
+            title: 'R2D2',
             category: 'automacao',
-            description: 'Orquestrador centralizado para execução de automações RPA, com múltiplas janelas simultâneas.',
+            description: 'Orquestrador de automações que executa RPA em sites e sistemas legados e envia os dados para o EcoaLog e o Tableau. Sucessor do Maestro/C3PO.',
             result: null,
-            tags: ['Python', 'Django', 'PyWinAuto', 'Playwright', 'APIs'],
+            tags: ['Python', 'RPA', 'APIs REST', 'Tableau'],
             link: null
         },
         {
             title: 'HeadControl',
             category: 'software',
-            description: 'Controle de headcounts nas estações produtivas com medição eficaz do IHH.',
+            description: 'Controle de headcount nas estações produtivas com medição de IHH, integrado ao ecossistema SAP.',
             result: null,
-            tags: ['Python', 'Django', 'SAP', 'Selenium', 'PostgreSQL'],
+            tags: ['Python', 'Django', 'SAP', 'PostgreSQL'],
             link: null
         },
         {
             title: 'Dashboard de Conferência',
             category: 'software',
-            description: 'Dashboard em tempo real para visibilidade completa do que está em conferência.',
+            description: 'Dashboard em tempo real da fila de conferência, servido por API Django REST sobre PostgreSQL.',
             result: null,
-            tags: ['Django REST', 'React', 'TypeScript', 'PostgreSQL', 'Vite'],
+            tags: ['Python', 'Django', 'DRF', 'PostgreSQL'],
             link: null
         },
         {
             title: 'Tracking de Caixas',
             category: 'dados',
-            description: 'Sistema para localizar volumes dentro do CD em tempo real via integração SAP.',
+            description: 'Localização de volumes dentro do CD em tempo real, via integração com o SAP e visão em Tableau.',
             result: null,
-            tags: ['Python', 'SAP', 'Tableau', 'VBS'],
+            tags: ['Python', 'SAP', 'Tableau'],
             link: null
         },
         {
             title: 'EtiquetasLOSS',
             category: 'automacao',
-            description: 'Automação do processo de impressão de etiquetas Zebra (ZPL) para controle de estoque.',
+            description: 'Automação da impressão de etiquetas para controle de estoque, com preparação dos dados em Pandas.',
             result: null,
-            tags: ['Python', 'PyQt6', 'Pandas', 'ZPL'],
+            tags: ['Python', 'Pandas', 'RPA'],
             link: null
         },
         {
             title: 'Tarjex',
             category: 'software',
-            description: 'Sistema web para controle de processos internos com interface reativa.',
+            description: 'Sistema web de controle de processos internos, com interface reativa em HTMX sobre Django.',
             result: null,
-            tags: ['Python', 'Django', 'HTMX', 'HTML/CSS', 'JavaScript'],
+            tags: ['Python', 'Django', 'HTMX'],
             link: null
         }
     ];
@@ -260,16 +276,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // =====================
     const experienceData = [
         {
-            role: 'Analista de Desenvolvimento de Sistemas',
+            role: 'Engenharia de Software (Backend)',
             company: 'TPC Logística Inteligente',
             period: 'setembro 2024 — presente',
-            desc: 'Desenvolvimento de sistemas personalizados com Python para otimizar processos produtivos e integração com SAP. Destaque para o DockSafe: 50% de redução nos erros de expedição.'
+            desc: 'Engenharia de software backend com Python e Django para operações logísticas de larga escala, integrada ao ecossistema SAP/WMS. Destaque: DockSafe — −80% nos erros de expedição e R$ 16,8M em frete duplicado evitado (set/2024 – set/2025).'
         },
         {
             role: 'Analista de Planejamento Logístico Sênior',
             company: 'Carajás Home Center',
             period: 'fevereiro 2024 — agosto 2024',
-            desc: 'Sistema de gestão de dados (TOTVS Protheus) com 90% de melhoria no tempo de análise de ocorrências e 4 painéis em Power BI.'
+            desc: 'Automação da análise de ocorrências sobre TOTVS Protheus, com 4 painéis em Power BI. Execução da tarefa caiu de ~8h/dia para 50min/dia.'
         },
         {
             role: 'Analista Computacional I',

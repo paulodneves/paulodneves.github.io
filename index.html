@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Diego Neves — Desenvolvedor Sênior e Estrategista de Dados. Dashboards, automações, agentes de atendimento e sistemas de apoio à decisão.">
-    <title>Diego Neves | Tecnologia que gera resultado</title>
+    <meta name="description" content="Paulo Neves — Engenheiro de Software Sênior, trilha Staff. Plataformas de dados e automação para operações logísticas de larga escala (SAP/WMS), com Python e Django.">
+    <title>Paulo Neves | Engenheiro de Software Sênior — trilha Staff</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="assets/img/foto-perfil.jpg">
@@ -154,16 +154,6 @@ svg { width: 24px; height: 24px; }
 .btn--ghost:hover {
     background-color: rgba(255,255,255,0.14);
     border-color: rgba(255,255,255,0.25);
-}
-
-.btn--whatsapp {
-    background-color: #25D366;
-    color: var(--white);
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
-}
-.btn--whatsapp:hover {
-    background-color: #1ebe5d;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
 }
 
 .btn--outline-light {
@@ -672,92 +662,7 @@ svg { width: 24px; height: 24px; }
 
 @media (min-width: 600px) { .servicos__grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .servicos__grid { grid-template-columns: repeat(4, 1fr); } }
-
-/* =============================
-   MODELO COMERCIAL
-============================= */
-.modelo { padding: 96px 0; }
-
-.modelo__steps {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 56px;
-}
-
-.modelo-step {
-    background-color: var(--dark-2);
-    border: 1px solid var(--border-dark);
-    border-radius: var(--radius-lg);
-    padding: 36px;
-    flex: 1;
-    transition: border-color 300ms, box-shadow 300ms, transform 300ms var(--ease-out-expo);
-}
-.modelo-step:hover {
-    border-color: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.08);
-    transform: translateY(-4px);
-}
-
-.modelo-step__num {
-    font-size: 2.25rem;
-    font-weight: 900;
-    color: var(--accent);
-    opacity: 0.5;
-    line-height: 1;
-    margin-bottom: 16px;
-    font-variant-numeric: tabular-nums;
-}
-
-.modelo-step h3 {
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: var(--text-light);
-    margin-bottom: 10px;
-}
-
-.modelo-step p {
-    font-size: 0.9375rem;
-    color: var(--text-muted-light);
-    line-height: 1.65;
-}
-
-.modelo__arrow {
-    color: var(--accent);
-    opacity: 0.4;
-    padding: 8px;
-    flex-shrink: 0;
-    transform: rotate(90deg);
-}
-.modelo__arrow svg { width: 28px; height: 28px; }
-
-.modelo__quote {
-    text-align: center;
-    padding: 40px;
-    border: 1px solid var(--border-dark);
-    border-radius: var(--radius-lg);
-    background-color: var(--dark-2);
-}
-
-.modelo__quote blockquote {
-    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-    font-weight: 700;
-    color: var(--text-light);
-    font-style: italic;
-    margin-bottom: 28px;
-    line-height: 1.5;
-}
-.modelo__quote blockquote::before { content: '\201C'; color: var(--accent); }
-.modelo__quote blockquote::after  { content: '\201D'; color: var(--accent); }
-
-@media (min-width: 768px) {
-    .modelo__steps {
-        flex-direction: row;
-        align-items: stretch;
-    }
-    .modelo__arrow { transform: rotate(0deg); }
-}
+@media (min-width: 900px) { .servicos__grid--3 { grid-template-columns: repeat(3, 1fr); } }
 
 /* =============================
    PORTFÓLIO
@@ -1146,14 +1051,12 @@ svg { width: 24px; height: 24px; }
     .hero__actions { justify-content: center; }
     .hero__title br { display: none; }
 
-    .sobre, .servicos, .modelo,
+    .sobre, .servicos,
     .portfolio, .experiencia,
     .habilidades, .contato { padding: 64px 0; }
     .section-header { margin-bottom: 36px; }
 
     .servico-card { padding: 24px; }
-    .modelo-step  { padding: 24px; }
-    .modelo__quote { padding: 24px 20px; }
 
     .contato__actions { flex-direction: column; align-items: stretch; }
     .contato__actions .btn { justify-content: center; }
@@ -1260,13 +1163,12 @@ svg { width: 24px; height: 24px; }
     <!-- NAV -->
     <header id="header" class="header">
         <nav class="nav">
-            <a href="#" class="nav__logo"><span class="accent">D</span>iego <span class="accent">N</span>eves</a>
+            <a href="#" class="nav__logo"><span class="accent">P</span>aulo <span class="accent">N</span>eves</a>
             <div class="nav__links" id="nav-links">
                 <a href="#sobre" class="nav__link">Sobre</a>
-                <a href="#servicos" class="nav__link">Serviços</a>
-                <a href="#portfolio" class="nav__link">Portfólio</a>
+                <a href="#portfolio" class="nav__link">Projetos</a>
                 <a href="#experiencia" class="nav__link">Trajetória</a>
-                <a href="#contato" class="nav__cta">Agendar Reunião</a>
+                <a href="#contato" class="nav__cta">Contato</a>
             </div>
             <button class="nav__mobile-btn" id="mobile-menu-button" aria-label="Menu">
                 <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -1275,10 +1177,9 @@ svg { width: 24px; height: 24px; }
         </nav>
         <div class="nav__mobile hidden" id="mobile-menu">
             <a href="#sobre" class="nav__mobile-link">Sobre</a>
-            <a href="#servicos" class="nav__mobile-link">Serviços</a>
-            <a href="#portfolio" class="nav__mobile-link">Portfólio</a>
+            <a href="#portfolio" class="nav__mobile-link">Projetos</a>
             <a href="#experiencia" class="nav__mobile-link">Trajetória</a>
-            <a href="#contato" class="nav__mobile-link nav__mobile-cta">Agendar Reunião</a>
+            <a href="#contato" class="nav__mobile-link nav__mobile-cta">Contato</a>
         </div>
     </header>
 
@@ -1288,26 +1189,26 @@ svg { width: 24px; height: 24px; }
         <section id="hero" class="hero">
             <div class="hero__container container">
                 <div class="hero__text">
-                    <span class="hero__badge">Desenvolvedor Sênior &middot; Estrategista de Dados</span>
+                    <span class="hero__badge">Engenheiro de Software Sênior &middot; Trilha Staff</span>
                     <h1 class="hero__title">
-                        Transformo operações em<br>
-                        <span class="accent">vantagem competitiva</span>
+                        Plataformas de dados e automação para<br>
+                        <span class="accent">operações logísticas de larga escala</span>
                     </h1>
                     <p class="hero__sub">
-                        O que construí para a Natura — dashboards, automações e sistemas de decisão — posso construir para a sua operação.
+                        Paulo Neves — engenharia de software backend com Python e Django, integrada ao ecossistema SAP/WMS. Mais de duas décadas em TI, com profundidade real em backend nos últimos anos.
                     </p>
                     <div class="hero__actions">
                         <a href="#portfolio" class="btn btn--primary">Ver Projetos</a>
-                        <a href="#contato" class="btn btn--ghost">Agendar Reunião &rarr;</a>
+                        <a href="#contato" class="btn btn--ghost">Contato &rarr;</a>
                     </div>
                     <div class="hero__social">
-                        <a href="https://www.linkedin.com/in/pdiegoneves" target="_blank" class="social-link" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/paulodneves/" target="_blank" class="social-link" aria-label="LinkedIn">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         </a>
-                        <a href="https://github.com/pdiegoneves" target="_blank" class="social-link" aria-label="GitHub">
+                        <a href="https://github.com/paulodneves" target="_blank" class="social-link" aria-label="GitHub">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
                         </a>
-                        <a href="https://www.youtube.com/@dundercore" target="_blank" class="social-link" aria-label="YouTube">
+                        <a href="https://www.youtube.com/@dundercore" target="_blank" rel="noopener" class="social-link" aria-label="Conteúdo técnico em Python no YouTube" title="Conteúdo técnico em Python no YouTube">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.407 0 6.43 0 12s.488 8.593 4.385 8.816c3.6.245 11.626.246 15.23 0C23.512 20.593 24 17.57 24 12s-.488-8.593-4.385-8.816zM9.545 15.568V8.432L15.818 12 9.545 15.568z" clip-rule="evenodd"/></svg>
                         </a>
                     </div>
@@ -1317,7 +1218,7 @@ svg { width: 24px; height: 24px; }
                     <img src="assets/img/foto-perfil.jpg"
                          srcset="assets/img/foto-perfil-360.jpg 360w, assets/img/foto-perfil.jpg 400w"
                          sizes="(max-width: 767px) 360px, 400px"
-                         alt="Diego Neves" class="hero__photo" width="400" height="400" fetchpriority="high">
+                         alt="Paulo Neves" class="hero__photo" width="400" height="400" fetchpriority="high">
                 </div>
             </div>
             <div class="hero__scroll">
@@ -1332,23 +1233,23 @@ svg { width: 24px; height: 24px; }
                 <div class="metrics__grid">
                     <div class="metric reveal">
                         <div class="metric__number">
-                            <span class="metric__unit">R$</span><span class="counter" data-target="16">0</span><span class="metric__unit">M</span>
+                            <span class="metric__unit">R$</span><span class="counter" data-target="16">0</span><span class="metric__unit">,8M</span>
                         </div>
-                        <p class="metric__label">de economia com<br>erros de expedição no 1º ano</p>
+                        <p class="metric__label">em frete duplicado evitado<br>(set/2024 – set/2025)</p>
                     </div>
                     <div class="metric__divider"></div>
                     <div class="metric reveal" style="--delay: 0.1s">
                         <div class="metric__number">
-                            <span class="counter" data-target="90">0</span><span class="metric__unit">%</span>
+                            <span class="metric__unit">−</span><span class="counter" data-target="80">0</span><span class="metric__unit">%</span>
                         </div>
-                        <p class="metric__label">ganho em tempo<br>de análise</p>
+                        <p class="metric__label">nos erros<br>de expedição</p>
                     </div>
                     <div class="metric__divider"></div>
                     <div class="metric reveal" style="--delay: 0.2s">
                         <div class="metric__number">
-                            <span class="counter" data-target="15">0</span><span class="metric__unit">+</span>
+                            <span class="counter" data-target="20">0</span><span class="metric__unit">+</span>
                         </div>
-                        <p class="metric__label">anos construindo<br>soluções de TI</p>
+                        <p class="metric__label">anos<br>em TI</p>
                     </div>
                 </div>
             </div>
@@ -1360,10 +1261,10 @@ svg { width: 24px; height: 24px; }
                 <div class="sobre__grid">
                     <div class="sobre__text">
                         <span class="section-label reveal">Sobre</span>
-                        <h2 class="section-title reveal">Tecnologia com visão de negócio</h2>
-                        <p class="sobre__p reveal">Comecei na infraestrutura de TI — servidores, redes, operações que nunca podiam parar. Hoje construo sistemas com Python e Django, mas o que mudou não foi a ferramenta: foi a escala do impacto.</p>
-                        <p class="sobre__p reveal" style="--delay: 0.1s">Não vejo apenas linhas de código. Vejo o processo, o gargalo, o custo invisível. Essa visão me permitiu criar o DockSafe — sistema que reduziu 50% dos erros de expedição na TPC Logística — e acelerar em 90% a análise de ocorrências na Carajás Home Center.</p>
-                        <p class="sobre__p reveal" style="--delay: 0.2s">Hoje aplico esse mesmo modelo na Natura. O que construo lá, posso construir para a sua operação.</p>
+                        <h2 class="section-title reveal">Engenharia de software com escala operacional</h2>
+                        <p class="sobre__p reveal">Mais de duas décadas em TI — comecei na infraestrutura, com servidores, redes e operações que não podiam parar. Nos últimos anos, o foco virou profundidade real em engenharia de software backend, com Python e Django.</p>
+                        <p class="sobre__p reveal" style="--delay: 0.1s">Desde set/2024, na TPC Logística, construo sistemas backend para operações logísticas de larga escala, integrados ao ecossistema SAP/WMS. O destaque é o DockSafe: dupla checagem de carregamento que reduziu em 80% os erros de expedição e evitou R$ 16,8M em frete duplicado (set/2024 – set/2025).</p>
+                        <p class="sobre__p reveal" style="--delay: 0.2s">Trabalho da modelagem de dados à API, tratando o gargalo operacional como problema de engenharia: ingestão em lote, orquestração via REST e automação corporativa sobre sistemas legados.</p>
                     </div>
                     <div class="sobre__skills reveal" style="--delay: 0.15s">
                         <h3 class="sobre__skills-title">Stack principal</h3>
@@ -1373,19 +1274,19 @@ svg { width: 24px; height: 24px; }
                                 <div class="skill-bar__track"><div class="skill-bar__fill" data-width="95"></div></div>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-bar__header"><span>Django &amp; APIs REST</span><span>90%</span></div>
+                                <div class="skill-bar__header"><span>Django &amp; DRF</span><span>90%</span></div>
                                 <div class="skill-bar__track"><div class="skill-bar__fill" data-width="90"></div></div>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-bar__header"><span>Power BI &amp; Tableau</span><span>85%</span></div>
+                                <div class="skill-bar__header"><span>PostgreSQL &amp; SQL</span><span>88%</span></div>
+                                <div class="skill-bar__track"><div class="skill-bar__fill" data-width="88"></div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-bar__header"><span>Pandas &amp; Polars</span><span>85%</span></div>
                                 <div class="skill-bar__track"><div class="skill-bar__fill" data-width="85"></div></div>
                             </div>
                             <div class="skill-bar">
-                                <div class="skill-bar__header"><span>SQL &amp; Bancos de Dados</span><span>85%</span></div>
-                                <div class="skill-bar__track"><div class="skill-bar__fill" data-width="85"></div></div>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-bar__header"><span>Automações RPA</span><span>88%</span></div>
+                                <div class="skill-bar__header"><span>RPA &amp; Integração SAP</span><span>88%</span></div>
                                 <div class="skill-bar__track"><div class="skill-bar__fill" data-width="88"></div></div>
                             </div>
                         </div>
@@ -1394,104 +1295,56 @@ svg { width: 24px; height: 24px; }
             </div>
         </section>
 
-        <!-- SERVIÇOS -->
-        <section id="servicos" class="servicos section-gray">
+        <!-- FRENTES TÉCNICAS -->
+        <section id="frentes" class="servicos section-gray">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-label reveal">O que faço</span>
-                    <h2 class="section-title reveal">Soluções que geram resultado</h2>
-                    <p class="section-sub reveal">Cada entrega é construída com foco no seu processo, não em tecnologia pela tecnologia.</p>
+                    <span class="section-label reveal">Frentes técnicas</span>
+                    <h2 class="section-title reveal">Onde atuo em profundidade</h2>
+                    <p class="section-sub reveal">Backend, dados e automação sobre operações logísticas de larga escala — do modelo de dados à API.</p>
                 </div>
-                <div class="servicos__grid">
+                <div class="servicos__grid servicos__grid--3">
                     <div class="servico-card reveal">
                         <div class="servico-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/></svg>
                         </div>
-                        <h3>Dashboards &amp; BI</h3>
-                        <p>Painéis gerenciais que transformam dados brutos em decisões rápidas. Da coleta ao visual, sem planilha manual.</p>
+                        <h3>Backend &amp; APIs</h3>
+                        <p>Serviços backend e APIs REST com Python e Django. Modelagem de domínio, camadas de serviço e interfaces reativas com HTMX, empacotados em Docker.</p>
                         <div class="servico-card__tags">
-                            <span>Power BI</span><span>Tableau</span><span>React</span><span>Python</span>
+                            <span>Python</span><span>Django</span><span>DRF</span><span>HTMX</span><span>APIs REST</span><span>Docker</span>
                         </div>
                     </div>
                     <div class="servico-card reveal" style="--delay: 0.1s">
                         <div class="servico-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75"/></svg>
                         </div>
-                        <h3>Automações (RPA)</h3>
-                        <p>Elimine tarefas repetitivas. Integração com SAP, ERP e sistemas legados. Seu time foca no que importa.</p>
+                        <h3>Engenharia de Dados</h3>
+                        <p>Ingestão em lote com Parquet e arquitetura Medallion, transformação com Pandas e Polars sobre PostgreSQL, entregando em Tableau e Power BI.</p>
                         <div class="servico-card__tags">
-                            <span>Python</span><span>Selenium</span><span>SAP</span><span>PyAutoGUI</span>
+                            <span>PostgreSQL</span><span>SQL</span><span>Pandas</span><span>Polars</span><span>Parquet / Medallion</span><span>Tableau</span><span>Power BI</span>
                         </div>
                     </div>
                     <div class="servico-card reveal" style="--delay: 0.2s">
                         <div class="servico-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V20l4.155-4.155"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
                         </div>
-                        <h3>Agentes de Atendimento</h3>
-                        <p>Bots inteligentes para triagem e atendimento automático. Responde, encaminha e registra — 24 horas.</p>
+                        <h3>Automação &amp; Integração</h3>
+                        <p>RPA corporativo e integração com o ecossistema SAP, orquestrando processos legados via REST APIs para eliminar trabalho manual repetitivo.</p>
                         <div class="servico-card__tags">
-                            <span>WhatsApp API</span><span>IA</span><span>Python</span><span>Integração</span>
-                        </div>
-                    </div>
-                    <div class="servico-card reveal" style="--delay: 0.3s">
-                        <div class="servico-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6"/></svg>
-                        </div>
-                        <h3>Sistemas de Apoio à Decisão</h3>
-                        <p>Sistemas web para acompanhamento de operações em tempo real. Do dado bruto à ação correta, na hora certa.</p>
-                        <div class="servico-card__tags">
-                            <span>Django</span><span>APIs REST</span><span>React</span><span>PostgreSQL</span>
+                            <span>RPA corporativo</span><span>Integração SAP</span><span>Orquestração REST</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- MODELO COMERCIAL -->
-        <section id="modelo" class="modelo section-dark">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-label section-label--light reveal">Modelo comercial</span>
-                    <h2 class="section-title section-title--light reveal">Um modelo diferente do mercado</h2>
-                    <p class="section-sub section-sub--light reveal">O mercado cobra R$1.000–R$3.000 de setup antes de entregar qualquer coisa, mais a mensalidade. Aqui é diferente.</p>
-                </div>
-                <div class="modelo__steps">
-                    <div class="modelo-step reveal">
-                        <div class="modelo-step__num">01</div>
-                        <h3>Taxa de estrutura</h3>
-                        <p>Você paga uma taxa enquanto a gente monta tudo. Sem setup surpresa, sem promessa vazia.</p>
-                    </div>
-                    <div class="modelo__arrow reveal">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
-                    </div>
-                    <div class="modelo-step reveal" style="--delay: 0.1s">
-                        <div class="modelo-step__num">02</div>
-                        <h3>Mês de avaliação</h3>
-                        <p>Sistema funcionando, você avalia com calma. Sem compromisso. Se não fizer sentido, encerra sem custo.</p>
-                    </div>
-                    <div class="modelo__arrow reveal" style="--delay: 0.1s">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
-                    </div>
-                    <div class="modelo-step reveal" style="--delay: 0.2s">
-                        <div class="modelo-step__num">03</div>
-                        <h3>Contrato anual</h3>
-                        <p>Só depois de validado. Valor fixo, transparente, sem surpresa. Proposta detalhada antes de qualquer assinatura.</p>
-                    </div>
-                </div>
-                <div class="modelo__quote reveal">
-                    <blockquote>"Você testa de verdade antes de assinar qualquer coisa."</blockquote>
-                    <a href="#contato" class="btn btn--primary">Quero uma proposta &rarr;</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- PORTFÓLIO -->
+        <!-- PROJETOS -->
         <section id="portfolio" class="portfolio section-light">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-label reveal">Portfólio</span>
-                    <h2 class="section-title reveal">Projetos com resultado real</h2>
-                    <p class="section-sub reveal">Uma seleção dos sistemas que já construí e o impacto gerado em cada operação.</p>
+                    <span class="section-label reveal">Projetos</span>
+                    <h2 class="section-title reveal">Sistemas em produção</h2>
+                    <p class="section-sub reveal">Uma seleção do que construí, com stack e decisão técnica de cada sistema. Números apenas onde há medição documentada.</p>
                 </div>
                 <div class="portfolio__filters reveal" id="portfolio-filters">
                     <button class="filter-btn active" data-filter="all">Todos</button>
@@ -1546,8 +1399,8 @@ svg { width: 24px; height: 24px; }
             <div class="container">
                 <div class="section-header">
                     <span class="section-label reveal">Trajetória</span>
-                    <h2 class="section-title reveal">De infra à solução full-stack</h2>
-                    <p class="section-sub reveal">15+ anos evoluindo de técnico de TI a desenvolvedor sênior com foco em resultado de negócio.</p>
+                    <h2 class="section-title reveal">Da infraestrutura à engenharia de software</h2>
+                    <p class="section-sub reveal">20+ anos em TI, com os últimos anos concentrados em engenharia de software backend.</p>
                 </div>
                 <div class="timeline" id="timeline">
                     <!-- skeleton -->
@@ -1582,50 +1435,47 @@ svg { width: 24px; height: 24px; }
         <section id="habilidades" class="habilidades section-light">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-label reveal">Habilidades</span>
-                    <h2 class="section-title reveal">Stack técnico completo</h2>
+                    <span class="section-label reveal">Stack técnico</span>
+                    <h2 class="section-title reveal">Ferramentas do dia a dia</h2>
                 </div>
                 <div class="habilidades__grid">
                     <div class="habilidade-card reveal">
                         <div class="habilidade-card__icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/></svg>
                         </div>
-                        <h3>Backend</h3>
+                        <h3>Backend &amp; Web</h3>
                         <ul>
                             <li>Python</li>
                             <li>Django</li>
-                            <li>Django REST Framework</li>
-                            <li>FastAPI</li>
-                            <li>PostgreSQL</li>
-                            <li>SQLite</li>
+                            <li>Django REST Framework (DRF)</li>
+                            <li>HTMX</li>
+                            <li>APIs REST</li>
+                            <li>Docker</li>
                         </ul>
                     </div>
                     <div class="habilidade-card reveal" style="--delay: 0.1s">
                         <div class="habilidade-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75"/></svg>
                         </div>
-                        <h3>Dados &amp; Automação</h3>
+                        <h3>Engenharia de Dados &amp; BI</h3>
                         <ul>
+                            <li>PostgreSQL</li>
+                            <li>SQL</li>
                             <li>Pandas</li>
-                            <li>Power BI</li>
-                            <li>Tableau</li>
-                            <li>Selenium / Playwright</li>
-                            <li>PyAutoGUI / PyWinAuto</li>
-                            <li>VBS / SAP</li>
+                            <li>Polars</li>
+                            <li>Ingestão em lote (Parquet / Medallion)</li>
+                            <li>Tableau &middot; Power BI</li>
                         </ul>
                     </div>
                     <div class="habilidade-card reveal" style="--delay: 0.2s">
                         <div class="habilidade-card__icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
                         </div>
-                        <h3>Frontend</h3>
+                        <h3>Automação &amp; Integração</h3>
                         <ul>
-                            <li>React / TypeScript</li>
-                            <li>JavaScript</li>
-                            <li>PyQt6</li>
-                            <li>TailwindCSS</li>
-                            <li>HTMX</li>
-                            <li>HTML / CSS</li>
+                            <li>RPA corporativo</li>
+                            <li>Integração com ecossistema SAP</li>
+                            <li>Orquestração via REST APIs</li>
                         </ul>
                     </div>
                 </div>
@@ -1637,24 +1487,21 @@ svg { width: 24px; height: 24px; }
             <div class="container">
                 <div class="contato__inner">
                     <span class="section-label section-label--light reveal">Contato</span>
-                    <h2 class="section-title section-title--light reveal">Vamos construir algo juntos</h2>
-                    <p class="contato__sub reveal">Faço uma reunião para criar uma proposta personalizada para a realidade de vocês. Sem compromisso, sem setup antecipado.</p>
+                    <h2 class="section-title section-title--light reveal">Vamos conversar</h2>
+                    <p class="contato__sub reveal">Aberto a oportunidades de Engenheiro de Software Sênior / Staff. E-mail e canais abaixo — inclusive conteúdo técnico em Python no YouTube.</p>
                     <div class="contato__actions reveal">
                         <a href="mailto:pdcassiano@gmail.com" class="btn btn--primary">pdcassiano@gmail.com</a>
-                        <a href="https://wa.me/5582996207887?text=Ol%C3%A1%20Diego%2C%20vi%20seu%20portf%C3%B3lio%20e%20tenho%20interesse%20em%20conhecer%20melhor%20seus%20servi%C3%A7os.%20Podemos%20conversar%3F" target="_blank" class="btn btn--whatsapp">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                            WhatsApp
-                        </a>
-                        <a href="https://www.linkedin.com/in/pdiegoneves" target="_blank" class="btn btn--outline-light">LinkedIn &rarr;</a>
+                        <a href="https://www.linkedin.com/in/paulodneves/" target="_blank" rel="noopener" class="btn btn--outline-light">LinkedIn &rarr;</a>
+                        <a href="https://github.com/paulodneves" target="_blank" rel="noopener" class="btn btn--outline-light">GitHub &rarr;</a>
                     </div>
                     <div class="contato__social reveal">
-                        <a href="https://www.linkedin.com/in/pdiegoneves" target="_blank" class="social-link" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/paulodneves/" target="_blank" class="social-link" aria-label="LinkedIn">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         </a>
-                        <a href="https://github.com/pdiegoneves" target="_blank" class="social-link" aria-label="GitHub">
+                        <a href="https://github.com/paulodneves" target="_blank" class="social-link" aria-label="GitHub">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
                         </a>
-                        <a href="https://www.youtube.com/@dundercore" target="_blank" class="social-link" aria-label="YouTube">
+                        <a href="https://www.youtube.com/@dundercore" target="_blank" rel="noopener" class="social-link" aria-label="Conteúdo técnico em Python no YouTube" title="Conteúdo técnico em Python no YouTube">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.407 0 6.43 0 12s.488 8.593 4.385 8.816c3.6.245 11.626.246 15.23 0C23.512 20.593 24 17.57 24 12s-.488-8.593-4.385-8.816zM9.545 15.568V8.432L15.818 12 9.545 15.568z" clip-rule="evenodd"/></svg>
                         </a>
                     </div>
@@ -1666,8 +1513,13 @@ svg { width: 24px; height: 24px; }
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Diego Neves. Todos os direitos reservados.</p>
-            <p class="footer__sub">Maceió, AL &mdash; <a href="mailto:pdcassiano@gmail.com">pdcassiano@gmail.com</a></p>
+            <p>&copy; 2026 Paulo Neves.</p>
+            <p class="footer__sub">
+                <a href="mailto:pdcassiano@gmail.com">E-mail</a> &middot;
+                <a href="https://www.linkedin.com/in/paulodneves/" target="_blank" rel="noopener">LinkedIn</a> &middot;
+                <a href="https://github.com/paulodneves" target="_blank" rel="noopener">GitHub</a> &middot;
+                <a href="https://www.youtube.com/@dundercore" target="_blank" rel="noopener" title="Conteúdo técnico em Python no YouTube">YouTube</a>
+            </p>
         </div>
     </footer>
 
