@@ -3,25 +3,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // =====================
     // MOBILE MENU
     // =====================
-    const mobileBtn   = document.getElementById('mobile-menu-button');
-    const mobileMenu  = document.getElementById('mobile-menu');
-    const iconMenu    = document.getElementById('icon-menu');
-    const iconClose   = document.getElementById('icon-close');
+    const mobileBtn  = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconMenu   = document.getElementById('icon-menu');
+    const iconClose  = document.getElementById('icon-close');
 
-    if (mobileBtn) {
+    if (mobileBtn && mobileMenu) {
         mobileBtn.addEventListener('click', () => {
             const open = !mobileMenu.classList.contains('hidden');
             mobileMenu.classList.toggle('hidden', open);
-            iconMenu.classList.toggle('hidden', !open);
-            iconClose.classList.toggle('hidden', open);
+            if (iconMenu) iconMenu.classList.toggle('hidden', !open);
+            if (iconClose) iconClose.classList.toggle('hidden', open);
         });
     }
 
-    document.querySelectorAll('.nav__mobile-link').forEach(link => {
+    document.querySelectorAll('.nav-mobile-link').forEach(link => {
         link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-            iconMenu.classList.remove('hidden');
-            iconClose.classList.add('hidden');
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+            if (iconMenu) iconMenu.classList.remove('hidden');
+            if (iconClose) iconClose.classList.add('hidden');
         });
     });
 
@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
             const id = link.getAttribute('href');
-            if (id === '#') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+            if (id === '#') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
             const target = document.querySelector(id);
             if (target) {
                 e.preventDefault();
@@ -43,15 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // =====================
     // ACTIVE NAV LINK
     // =====================
-    const sections  = document.querySelectorAll('main section[id]');
-    const navLinks  = document.querySelectorAll('.nav__link');
-    const navH      = 68; // matches --nav-h in CSS
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navH     = 68; // matches --nav-h in CSS
 
     const sectionObserver = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) {
                 navLinks.forEach(l => l.classList.remove('active'));
-                const active = document.querySelector(`.nav__link[href="#${e.target.id}"]`);
+                const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
                 if (active) active.classList.add('active');
             }
         });
@@ -73,8 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // Double rAF: after first paint, initial IntersectionObserver callbacks
-    // have already fired for in-viewport elements — safe to enable animations
     requestAnimationFrame(() => requestAnimationFrame(() => {
         document.documentElement.classList.add('js-ready');
     }));
@@ -84,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // =====================
     function animateCounter(el) {
         const target   = parseInt(el.dataset.target, 10);
-        const duration = 2000;
-        const steps    = 60;
+        const duration = 1600;
+        const steps    = 50;
         const stepMs   = duration / steps;
-        let   current  = 0;
+        let current    = 0;
         const inc      = target / steps;
 
         const timer = setInterval(() => {
@@ -113,109 +115,128 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
 
     // =====================
-    // SKILL BARS
-    // =====================
-    const barObserver = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.style.width = e.target.dataset.width + '%';
-                barObserver.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.skill-bar__fill').forEach(el => barObserver.observe(el));
-
-    // =====================
-    // PORTFOLIO DATA
+    // PORTFOLIO DATA (CASES DE PRODUÇÃO & ROI)
     // =====================
     const portfolioData = [
         {
-            title: 'DockSafe',
+            title: 'DockSafe — Blindagem de Faturamento & Dupla Checagem SAP',
+            sector: 'AUDITORIA DE ALTO VOLUME · OPERAÇÃO JSL / NATURA',
             category: 'software',
-            description: 'Dupla checagem do carregamento na expedição, com backend Django sobre PostgreSQL. Reduziu em 80% os erros de expedição e evitou R$ 16,8M em frete duplicado (set/2024 – set/2025).',
-            result: 'R$ 16,8M evitados',
-            tags: ['Python', 'Django', 'PostgreSQL', 'Parquet', 'Pandas'],
+            result: 'R$ 16,8M economizados · -80% erros',
+            description: 'Plataforma full-stack de verificação de expedição com ingestão em lote offline-first (Parquet) para blindar a API REST e mitigar concorrência crítica no PostgreSQL.',
+            pain: 'Risco severo de cobranças de frete duplicadas, erros manuais de expedição e gargalos de concorrência (locks) no PostgreSQL sob pico de operação.',
+            solution: 'Arquitetura full-stack em Python, Django, Streamlit, PyQt6 e PostgreSQL com camada batch offline-first em Parquet, evitando R$ 16,8M (~$3M+ USD) em 12 meses.',
+            tags: ['Python', 'Django', 'PostgreSQL', 'Parquet', 'Pandas', 'PyQt6', 'SAP'],
             link: 'projetos/DockSafe.html'
         },
         {
-            title: 'EcoaLog',
-            category: 'dados',
-            description: 'Consolidou dados do CD antes dispersos em várias planilhas e dashboards numa visão global única de produtividade, backlog e demanda, servida por API Django Ninja com visualizações em D3.js.',
-            result: null,
-            tags: ['Python', 'Django', 'Django Ninja', 'D3.js', 'Alpine.js'],
-            link: null
-        },
-        {
-            title: 'Project Flow',
+            title: 'SAPServices — Decomposição de Monolito para Microsserviço Assíncrono',
+            sector: 'ARQUITETURA DE MICROSSERVIÇOS · FASTAPI & DATABRICKS',
             category: 'software',
-            description: 'Gerenciador de projetos e tarefas que calcula automaticamente a matriz esforço/retorno. Adotado como padrão de gestão de projetos no CD.',
-            result: null,
-            tags: ['Python', 'Django', 'Alpine.js'],
+            result: 'Zero OOM · Escala Multi-CD',
+            description: 'Extração do domínio de consulta SAP de um monolito síncrono para um microsserviço assíncrono em FastAPI + PostgreSQL com cache local e resolução no Databricks.',
+            pain: 'Incidente de OOM Killer em produção expôs dívida técnica de um sistema fullstack síncrono acoplado que compartilhava banco de dados sob alta carga.',
+            solution: 'Diagnóstico post-mortem de causa-raiz e refatoração para microsserviço assíncrono FastAPI com banco próprio alimentado por ETL/RPA e integração on-demand ao Databricks.',
+            tags: ['FastAPI', 'Python Async', 'PostgreSQL', 'Databricks', 'ETL / RPA', 'Microsserviços'],
             link: null
         },
         {
-            title: 'Análise de Ocorrências',
+            title: 'EcoaLog / SmartSave — Plataforma Real-Time Multi-Sistema',
+            sector: 'PRODUTIVIDADE INDUSTRIAL · 1º LUGAR PRÊMIO VERA 2025 NATURA',
             category: 'dados',
-            description: 'Automação da análise de ocorrências sobre TOTVS Protheus, com painéis em Power BI. Execução da tarefa caiu de ~8h/dia para 50min/dia (~90%).',
-            result: '8h → 50min/dia',
-            tags: ['Python', 'SQL', 'Power BI', 'RPA'],
+            result: 'Ciclo de 7 min · -30 min/h manuais',
+            description: 'Plataforma web em Django 6.0 + Django-Ninja (Pydantic) + HTMX consolidando dados de WAMAS WMS, MFC e SAP a cada 7 minutos.',
+            pain: 'Dois líderes de linha perdiam 15 minutos a cada hora coletando dados manualmente no chão de fábrica, atrasando o ciclo de report do analista.',
+            solution: 'API RESTful com contratos estritos em Pydantic (Django-Ninja) e front-end reativo em HTMX sobre PostgreSQL, atualizando indicadores a cada 7 minutos. Vencedor do 1º Lugar VERA 2025.',
+            tags: ['Django 6.0', 'Django-Ninja', 'Pydantic', 'HTMX', 'PostgreSQL', 'SAP / WAMAS'],
             link: null
         },
         {
-            title: 'Velocidade de Entrega',
+            title: 'Automação ERP TOTVS Protheus & One-Page Dashboards C-Level',
+            sector: 'VAREJO & HOME CENTER · CARAJÁS HOME CENTER',
+            category: 'automacao',
+            result: '-90% tempo de análise (8h → 50m)',
+            description: 'Rotinas automatizadas em Python RPA e pipelines SQL / Power Query integrados ao ERP TOTVS Protheus para auditoria operacional e People Analytics.',
+            pain: 'Extração manual lenta no TOTVS Protheus consumia ~8h diárias para auditar cortes, cancelamentos de pedidos e produtividade de headcount por turno.',
+            solution: 'Robôs em Python e pipelines Power Query alimentando 4 One-Page Dashboards executivos em Power BI (incluindo preditivo de Black Friday), elevando em +25% a eficiência da equipe.',
+            tags: ['Python RPA', 'TOTVS Protheus', 'Power BI', 'SQL', 'Power Query', 'People Analytics'],
+            link: null
+        },
+        {
+            title: 'Engenharia de Dados Financeiros & DRE Executivo',
+            sector: 'SAÚDE & CLÍNICAS MÉDICAS · EYELASER CENTER',
             category: 'dados',
-            description: 'Consolidação de faturamento com Pandas sobre extrações do SAP, eliminando relatórios manuais e entregando a visão em Tableau.',
-            result: null,
-            tags: ['Python', 'Pandas', 'SAP', 'Tableau'],
+            result: '+20% eficiência · -15% tempo SLA',
+            description: 'Modelagem financeira avançada em SQL, Power Query e DAX com componentes visuais HTML customizados para leitura executiva de DRE, Faturamento e Ticket Médio.',
+            pain: 'Consolidação manual de indicadores clínicos e financeiros atrasava a análise de margem líquida e tomada de decisão da diretoria médica.',
+            solution: 'Pipelines automatizados de BI e visuais HTML sob medida dentro do Power BI, aliados à gestão de alta disponibilidade (100% uptime em 1.000+ cirurgias oftalmológicas).',
+            tags: ['Power BI', 'DAX Avançado', 'SQL', 'Power Query', 'HTML Custom', 'DRE Financeiro'],
+            link: null
+        },
+        {
+            title: 'Maestro + C3PO / R2D2 — Orquestrador Central de RPA (Medallion)',
+            sector: 'ORQUESTRAÇÃO DE AUTOMAÇÕES · ARQUITETURA MEDALLION',
+            category: 'automacao',
+            result: 'Centralização REST · Redução de Infra',
+            description: 'Orquestrador central de bots RPA via APIs REST (Python, Playwright, PyWinAuto) e servidor de ingestão em Robot Framework normalizando sistemas legados.',
+            pain: 'Automações locais fragmentadas em múltiplas máquinas geravam falhas silenciosas, alto custo de manutenção e dados despadronizados.',
+            solution: 'Arquitetura centralizada orientada a APIs REST com ingestão estruturada em camadas (Medallion Architecture), acelerando a criação de novos robôs sobre sistemas legados.',
+            tags: ['Python', 'Playwright', 'PyWinAuto', 'Robot Framework', 'REST APIs', 'Medallion'],
+            link: null
+        },
+        {
+            title: 'Project Flow — Gestão Ágil & Matriz Esforço/Retorno',
+            sector: 'SISTEMA CORPORATIVO SOB MEDIDA · DOCKER-FIRST',
+            category: 'software',
+            result: 'Padrão Corporativo · 100% Aderência',
+            description: 'Aplicação web full-stack para priorização automática de demandas de engenharia, construída com Spec-Driven Development (SDD), DRF, Docker e HTMX.',
+            pain: 'Demandas técnicas e operacionais dispersas em planilhas sem critério matemático de priorização entre esforço técnico e retorno de negócio.',
+            solution: 'Sistema web containerizado (Docker-first) com Django REST Framework e HTMX que calcula automaticamente a matriz esforço/retorno, adotado como ferramenta padrão corporativa.',
+            tags: ['Django REST (DRF)', 'HTMX', 'Docker', 'Spec-Driven Dev', 'PostgreSQL'],
+            link: null
+        },
+        {
+            title: 'Velocidade de Entrega — Pipeline Faturamento SAP & Tableau',
+            sector: 'AUTOMAÇÃO DE SLA & FATURAMENTO · SAP / TABLEAU',
+            category: 'dados',
+            result: 'SLA de 2 dias garantido',
+            description: 'Pipelines automatizados em Python e VBS extraindo dados do SAP e alimentando painéis executivos no Tableau sem intervenção humana.',
+            pain: 'Geração manual de relatórios de faturamento e expedição consumia horas da operação e colocava em risco o SLA contratual de 2 dias.',
+            solution: 'Extração programada no SAP com transformação em Pandas e atualização direta no Tableau, garantindo visibilidade contínua e cumprimento rigoroso do SLA.',
+            tags: ['Python', 'Pandas', 'SAP Scripting', 'VBS', 'Tableau'],
             link: 'projetos/Velocidade-de-Entrega.html'
         },
         {
-            title: 'R2D2',
+            title: 'ERP Proprietário, Service Desk & Controle de Garantias',
+            sector: 'SISTEMA WEB B2B SEM MENSALIDADE POR USUÁRIO · MACEIÓ TI',
+            category: 'software',
+            result: '9 Contratos B2B · +50% Base Clientes',
+            description: 'Desenvolvimento full-stack do zero de sistema de gestão de chamados, SLAs e garantias em Python, Flask, PostgreSQL, HTML5, CSS3 e JavaScript.',
+            pain: 'Softwares de mercado cobravam mensalidades caras por atendente e não possuíam o fluxo específico de rastreio de garantias de hardware e contratos B2B.',
+            solution: 'Arquitetura web leve e dedicada em Python/Flask sobre PostgreSQL que sustentou o crescimento de 50% da carteira (150+ clientes B2C e 9 contratos B2B) em operação solo.',
+            tags: ['Python', 'Flask', 'PostgreSQL', 'JavaScript', 'HTML5 / CSS3', 'ERP Custom'],
+            link: null
+        },
+        {
+            title: 'Integração Fiscal (CTe/MDFe) & Portal Web de Tracking de Cargas',
+            sector: 'ENGENHARIA FISCAL & PORTAL DO CLIENTE · SUED EXPRESS (5 FILIAIS)',
+            category: 'software',
+            result: '+30% Uptime · -25% Tempo de Resolução',
+            description: 'Arquitetura de emissores fiscais eletrônicos e desenvolvimento de portal web customer-facing integrado a bancos de dados TMS legados.',
+            pain: 'Clientes precisavam acionar o suporte manualmente para saber o status de cargas, e falhas de servidor entre as 5 filiais travavam a emissão de CTe/MDFe.',
+            solution: 'Portal web de rastreamento em tempo real conectado diretamente aos bancos legados do TMS, somado à modernização da infraestrutura distribuída das 5 filiais.',
+            tags: ['Integração Fiscal CTe/MDFe', 'Web Tracking', 'SQL / TMS Legado', 'Alta Disponibilidade'],
+            link: null
+        },
+        {
+            title: 'HeadControl, Tarjex & EtiquetasLOSS — Suite Operacional',
+            sector: 'AUTOMAÇÃO INDUSTRIAL & MONITORAMENTO REAL-TIME',
             category: 'automacao',
-            description: 'Orquestrador de automações que executa RPA em sites e sistemas legados e envia os dados para o EcoaLog e o Tableau. Sucessor do Maestro/C3PO.',
-            result: null,
-            tags: ['Python', 'RPA', 'APIs REST', 'Tableau'],
-            link: null
-        },
-        {
-            title: 'HeadControl',
-            category: 'software',
-            description: 'Controle de headcount nas estações produtivas com medição de IHH, integrado ao ecossistema SAP.',
-            result: null,
-            tags: ['Python', 'Django', 'SAP', 'PostgreSQL'],
-            link: null
-        },
-        {
-            title: 'Dashboard de Conferência',
-            category: 'software',
-            description: 'Dashboard em tempo real da fila de conferência, servido por API Django REST sobre PostgreSQL.',
-            result: null,
-            tags: ['Python', 'Django', 'DRF', 'PostgreSQL'],
-            link: null
-        },
-        {
-            title: 'Tracking de Caixas',
-            category: 'dados',
-            description: 'Localização de volumes dentro do CD em tempo real, via integração com o SAP e visão em Tableau.',
-            result: null,
-            tags: ['Python', 'SAP', 'Tableau'],
-            link: null
-        },
-        {
-            title: 'EtiquetasLOSS',
-            category: 'automacao',
-            description: 'Automação da impressão de etiquetas para controle de estoque, com preparação dos dados em Pandas.',
-            result: null,
-            tags: ['Python', 'Pandas', 'RPA'],
-            link: null
-        },
-        {
-            title: 'Tarjex',
-            category: 'software',
-            description: 'Sistema web de controle de processos internos, com interface reativa em HTMX sobre Django.',
-            result: null,
-            tags: ['Python', 'Django', 'HTMX'],
+            result: 'Relatórios IHH Instantâneos · ZPL Auto',
+            description: 'Ecossistema de apps web (Django, HTMX, Selenium, PyAutoGUI) para controle de IHH e tarjas, mais serviço desktop (PyQt6/Pandas) para impressão ZPL.',
+            pain: 'Lentidão na geração de relatórios de produtividade (IHH), descontrole no fluxo de tarjas e atrasos na impressão manual de etiquetas de estoque.',
+            solution: 'Aplicações reativas em Django + HTMX integradas via RPA e gerador desktop nativo em PyQt6 disparando código ZPL direto para impressoras térmicas industriais.',
+            tags: ['Django', 'HTMX', 'Selenium / PyAutoGUI', 'PyQt6', 'Pandas', 'ZPL Barcode'],
             link: null
         }
     ];
@@ -231,31 +252,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         grid.innerHTML = '';
 
-        items.forEach((item, i) => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            card.style.animationDelay = `${i * 0.06}s`;
-
-            const resultBadge = item.result
-                ? `<span class="project-card__result">${item.result}</span>`
-                : '';
+        items.forEach(item => {
+            const card = document.createElement('article');
+            card.className = 'case-card';
 
             const linkEl = item.link
-                ? `<a href="${item.link}" class="project-card__link">Ver projeto &rarr;</a>`
+                ? `<a href="${item.link}" class="case-link">Ver estudo técnico completo &rarr;</a>`
                 : '';
 
             card.innerHTML = `
-<div class="project-card__body">
-    <div class="project-card__header">
-        <h3 class="project-card__title">${item.title}</h3>
-        ${resultBadge}
-    </div>
-    <p class="project-card__desc">${item.description}</p>
-    <div class="project-card__tags">
-        ${item.tags.map(t => `<span>${t}</span>`).join('')}
-    </div>
-    ${linkEl}
-</div>`;
+                <div>
+                    <div class="case-sector">${item.sector}</div>
+                    <h3>${item.title}</h3>
+                    <div class="case-roi-highlight">${item.result}</div>
+                    <div class="pain-solution-box">
+                        <div class="pain-item">
+                            <strong>Cenário Anterior (Gargalo)</strong>
+                            ${item.pain}
+                        </div>
+                        <div class="solution-item">
+                            <strong>Arquitetura Implementada</strong>
+                            ${item.solution}
+                        </div>
+                    </div>
+                </div>
+                <div class="case-footer">
+                    <div class="badge-list">
+                        ${item.tags.map(t => `<span class="tech-badge">${t}</span>`).join('')}
+                    </div>
+                    ${linkEl}
+                </div>
+            `;
 
             grid.appendChild(card);
         });
@@ -272,50 +299,50 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPortfolio();
 
     // =====================
-    // TIMELINE
+    // TIMELINE DATA (TRAJETÓRIA DE ENGENHARIA)
     // =====================
     const experienceData = [
         {
-            role: 'Engenharia de Software (Backend)',
-            company: 'TPC Logística Inteligente',
-            period: 'setembro 2024 — presente',
-            desc: 'Engenharia de software backend com Python e Django para operações logísticas de larga escala, integrada ao ecossistema SAP/WMS. Destaque: DockSafe — −80% nos erros de expedição e R$ 16,8M em frete duplicado evitado (set/2024 – set/2025).'
+            role: 'Senior Team Leader — IDEA (Control Tower)',
+            company: 'Mercado Livre',
+            period: 'Set 2026 — Atual · São Bernardo do Campo, SP (Remoto)',
+            desc: 'Liderança de inteligência operacional em Torre de Controle e coordenação técnica cross-system no maior ecossistema de e-commerce e tecnologia logística da América Latina.'
         },
         {
-            role: 'Analista de Planejamento Logístico Sênior',
+            role: 'Full-Stack Software Engineer (Analista de Desenvolvimento de Sistemas 3)',
+            company: 'TPC Logística Inteligente (Operação JSL / Natura)',
+            period: 'Set 2024 — Set 2026 · 2 anos',
+            desc: 'Modernização ponta a ponta da operação substituindo fluxos manuais por aplicações full-stack containerizadas (Django, FastAPI, HTMX, Docker), APIs assíncronas e pipelines Parquet/Medallion integrados ao SAP e Databricks. Autor do DockSafe (R$ 16,8M economizados) e coautor do EcoaLog/SmartSave (1º Lugar Prêmio VERA 2025 Natura).'
+        },
+        {
+            role: 'Analista Sênior de Dados & RPA (Python / SQL / Power BI)',
             company: 'Carajás Home Center',
-            period: 'fevereiro 2024 — agosto 2024',
-            desc: 'Automação da análise de ocorrências sobre TOTVS Protheus, com 4 painéis em Power BI. Execução da tarefa caiu de ~8h/dia para 50min/dia.'
+            period: 'Fev 2024 — Ago 2024 · Rio Largo, AL',
+            desc: 'Desenvolvimento de robôs em Python e pipelines SQL/Power Query integrados diretamente ao ERP TOTVS Protheus. Reduziu em 90% o tempo de análise de ocorrências (de 8h para 50min/dia), entregou 4 One-Page Dashboards para a diretoria e elevou a eficiência da equipe em 25%.'
         },
         {
-            role: 'Analista Computacional I',
+            role: 'Data Analyst, BI Developer & Systems Specialist',
             company: 'Eyelaser Center',
-            period: 'março 2022 — fevereiro 2024 · 2 anos',
-            desc: 'Dashboards para diretoria, suporte técnico e gestão de equipamentos de TI e médicos. Redução de 15% no tempo de resolução de problemas.'
+            period: 'Mar 2022 — Fev 2024 · 2 anos · Maceió, AL',
+            desc: 'Engenharia de pipelines financeiros (SQL, Power Query, DAX) e componentes HTML customizados em Power BI para DRE, Faturamento e Ticket Médio (+20% eficiência operacional, -15% tempo de resolução). Garantiu 100% de disponibilidade tecnológica em mais de 1.000 cirurgias oftalmológicas.'
         },
         {
-            role: 'CEO',
+            role: 'Consultor B2B & Desenvolvedor Full-Stack (CNPJ Próprio)',
             company: 'Maceió TI',
-            period: 'maio 2021 — maio 2026 · 5 anos',
-            desc: 'Gestão de todas as operações, sistema interno de gestão e estratégias de webmarketing.'
+            period: 'Mai 2020 — Mai 2026 · 6 anos · Maceió, AL',
+            desc: 'Operação independente atendendo 9 contratos B2B e 150+ clientes. Projetou e construiu do zero um ERP e Service Desk proprietário em Python, Flask, PostgreSQL e JavaScript para controle de SLAs, chamados e garantias, além de arquiteturas Windows Server/AD e Disaster Recovery.'
         },
         {
-            role: 'Gerente de TI',
-            company: 'EPST',
-            period: 'abril 2012 — maio 2021 · 9 anos',
-            desc: 'Gestão de TI de 5 filiais, suporte a ERP e implantação de CTe/MDFe. Aumento de 30% na disponibilidade dos servidores.'
+            role: 'Gerente de TI — Integração Fiscal (CTe/MDFe) & Engenharia de Software',
+            company: 'SUED Express (EPST)',
+            period: 'Abr 2012 — Mai 2021 · 9 anos 2 meses · Maceió, AL',
+            desc: 'Liderança da arquitetura distribuída de 5 filiais, implantação integral dos emissores fiscais CTe/MDFe e desenvolvimento full-stack de sistema web customer-facing para rastreamento de cargas em tempo real sobre bancos TMS legados (+30% disponibilidade, -25% tempo de resolução).'
         },
         {
-            role: 'Coordenador de TI',
-            company: 'Norvinco Indústria de Embalagem',
-            period: 'agosto 2011 — abril 2012',
-            desc: 'Definição de metas (BSC, SWOT) e melhoria de 50% na eficiência dos sistemas.'
-        },
-        {
-            role: 'Técnico de Informática',
-            company: 'I.Soluções',
-            period: 'julho 2010 — março 2011',
-            desc: 'Tech Lead em configuração e documentação de redes. 30% de melhoria em eficiência e confiabilidade.'
+            role: 'Coordenador de TI & Tech Lead Nível 3 (Escalação B2B)',
+            company: 'Norvinco Indústria de Embalagem & I.Soluções Tecnologia',
+            period: 'Jul 2010 — Abr 2012 · Maceió, AL',
+            desc: 'Reestruturação de servidores e governança de indicadores com BSC e SWOT na indústria Norvinco (+50% eficiência computacional) e liderança técnica de escalação Nível 3 em contratos B2B na I.Soluções (-20% em lead time e retrabalho).'
         }
     ];
 
@@ -325,15 +352,93 @@ document.addEventListener('DOMContentLoaded', () => {
         experienceData.forEach((job, i) => {
             const el = document.createElement('div');
             el.className = 'timeline-item reveal';
-            el.style.setProperty('--delay', `${i * 0.08}s`);
+            el.style.setProperty('--delay', `${i * 0.06}s`);
             el.innerHTML = `
-<p class="timeline-item__role">${job.role}</p>
-<p class="timeline-item__company">${job.company}</p>
-<p class="timeline-item__period">${job.period}</p>
-<p class="timeline-item__desc">${job.desc}</p>`;
+                <p class="timeline-item__period">${job.period}</p>
+                <p class="timeline-item__role">${job.role}</p>
+                <p class="timeline-item__company">${job.company}</p>
+                <p class="timeline-item__desc">${job.desc}</p>
+            `;
             timeline.appendChild(el);
-
             revealObserver.observe(el);
+        });
+    }
+
+    // =====================
+    // LEAD QUALIFICATION & BRIEFING GENERATOR (WORKANA / FREELANCER / B2B)
+    // =====================
+    const leadForm     = document.getElementById('b2b-lead-form');
+    const btnCopy      = document.getElementById('btn-copy-briefing');
+    const copyFeedback = document.getElementById('copy-feedback');
+
+    function buildStructuredBriefing() {
+        const name       = (document.getElementById('lead-name')?.value || '').trim();
+        const company    = (document.getElementById('lead-company')?.value || '').trim();
+        const channel    = document.getElementById('lead-channel')?.value || 'Workana (Escrow / Garantia)';
+        const maturity   = document.getElementById('lead-maturity')?.value || 'Escopo definido — pronto para iniciar';
+        const scope      = document.querySelector('input[name="scope"]:checked')?.value || 'Automação RPA / Integração ERP';
+        const bottleneck = (document.getElementById('lead-bottleneck')?.value || '').trim();
+
+        const text =
+            `[BRIEFING TÉCNICO — PROJETO QUALIFICADO]\n` +
+            `• Cliente / Responsável: ${name || 'Não informado'}\n` +
+            `• Empresa / Segmento: ${company || 'Não informado'}\n` +
+            `• Canal de Contratação: ${channel}\n` +
+            `• Frente Técnica: ${scope}\n` +
+            `• Maturidade / Urgência: ${maturity}\n\n` +
+            `• Gargalo Operacional / Escopo Desejado:\n${bottleneck || 'A detalhar no alinhamento.'}\n\n` +
+            `Solicito análise arquitetural e proposta dividida em milestones.`;
+
+        return { name, company, channel, maturity, scope, bottleneck, text };
+    }
+
+    if (btnCopy) {
+        btnCopy.addEventListener('click', async () => {
+            const nameInput = document.getElementById('lead-name');
+            const bottleneckInput = document.getElementById('lead-bottleneck');
+
+            if (nameInput && !nameInput.value.trim()) {
+                nameInput.focus();
+                return;
+            }
+            if (bottleneckInput && !bottleneckInput.value.trim()) {
+                bottleneckInput.focus();
+                return;
+            }
+
+            const { text } = buildStructuredBriefing();
+
+            try {
+                await navigator.clipboard.writeText(text);
+                if (copyFeedback) {
+                    copyFeedback.textContent = '✓ Briefing técnico copiado! Cole diretamente no chat do Workana ou Freelancer.com.br.';
+                    copyFeedback.classList.remove('hidden');
+                    setTimeout(() => copyFeedback.classList.add('hidden'), 6000);
+                }
+            } catch (_) {
+                // Fallback for older browsers
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                if (copyFeedback) {
+                    copyFeedback.textContent = '✓ Briefing técnico copiado! Cole diretamente no chat do Workana ou Freelancer.com.br.';
+                    copyFeedback.classList.remove('hidden');
+                    setTimeout(() => copyFeedback.classList.add('hidden'), 6000);
+                }
+            }
+        });
+    }
+
+    if (leadForm) {
+        leadForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const { company, scope, channel, text } = buildStructuredBriefing();
+            const subject = encodeURIComponent(`[${channel} - ${scope}] ${company || 'Novo Projeto'}`);
+            const body    = encodeURIComponent(text);
+            window.location.href = `mailto:pdcassiano@gmail.com?subject=${subject}&body=${body}`;
         });
     }
 
